@@ -1,3 +1,8 @@
+/*
+ * @brief: 页面配置头文件
+ * @file: ldesk_sys_page_conf.h
+ */
+
 #ifndef __LDESK_SYS_PAGE_CONF_H_
 #define __LDESK_SYS_PAGE_CONF_H_
 
@@ -7,13 +12,16 @@ extern "C" {
 
 #include "../../lv_ldesk_sys.h"
 
+// 定义页面初始化函数宏
 #define PAGE_INIT_DEF(TAG) page_##TAG##_init
 
-enum PAGE_ID {
+// 页面ID枚举
+typedef enum {
   PAGE_NULL = -1,
   PAGE_APPS,
-};
+} PAGE_ID;
 
+// 声明页面对象
 extern struct page_object page_apps;
 
 #ifdef __cplusplus

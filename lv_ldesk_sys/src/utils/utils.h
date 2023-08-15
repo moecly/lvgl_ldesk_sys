@@ -7,7 +7,6 @@ extern "C" {
 
 #include "../../lv_ldesk_sys.h"
 
-#include "check_type/check_type.h"
 #include "common/common.h"
 #include "list/list.h"
 #include "log_msg/log_msg.h"

@@ -1,24 +1,50 @@
+/*
+ * @brief: 应用页面实现文件，定义应用页面的初始化和事件处理函数
+ * @file: ldesk_sys_page_apps.h
+ */
+
 #include "ldesk_sys_page_apps.h"
 #include "stdio.h"
 #include <stdint.h>
 
+// 页面GUI对象
 static page_gui *page_self_gui;
+
+// 应用列表行容器
 static lv_obj_t *cont_row_app;
+
+// 应用名称标签
 static lv_obj_t *label_name;
+
+// 页面名称
 static char *PAGE_NAME = "apps";
+
+// 应用图标大小
 static uint32_t app_obj_size = 0;
 
+/**
+ * @brief 添加阴影效果到图标
+ * @param obj 要添加阴影效果的对象
+ */
 static void icon_add_shadow(lv_obj_t *obj) {
   lv_obj_set_style_shadow_width(obj, APPS_APP_SHADOW_WIDTH, LV_PART_MAIN);
   lv_obj_set_style_shadow_color(obj, lv_palette_main(LV_PALETTE_BLUE),
                                 LV_PART_MAIN);
 }
 
+/**
+ * @brief 移除图标的阴影效果
+ * @param obj 要移除阴影效果的对象
+ */
 static void icon_remove_shadow(lv_obj_t *obj) {
   lv_obj_set_style_shadow_width(obj, 0, LV_PART_MAIN);
   lv_obj_set_style_shadow_color(obj, lv_color_white(), LV_PART_MAIN);
 }
 
+/**
+ * @brief 切换应用
+ * @param id 要切换的应用ID
+ */
 static void switch_app(uint32_t id) {
   static uint32_t old_id = -1;
   static int old_y = -1;
@@ -45,7 +71,7 @@ static void switch_app(uint32_t id) {
   lv_obj_scroll_to_x(parent, to_x, LV_ANIM_ON);
   lv_label_set_text(label_name, app->name);
 
-  /* open app */
+  // 打开应用
   if (old_id == id)
     return;
 
@@ -66,16 +92,32 @@ static void switch_app(uint32_t id) {
   old_id = id;
 }
 
+/**
+ * @brief 滚动事件处理函数
+ * @param e 事件对象
+ */
 static void event_scroll_end_handler(lv_event_t *e) {}
 
+/**
+ * @brief 按键事件处理函数
+ * @param e 事件对象
+ */
 static void event_key_handler(lv_event_t *e) {}
 
+/**
+ * @brief 点击事件处理函数
+ * @param e 事件对象
+ */
 static void event_clicked_handler(lv_event_t *e) {
   lv_obj_t *target = e->current_target;
   uint32_t id = lv_obj_get_child_id(target);
   switch_app(id);
 }
 
+/**
+ * @brief 通用事件处理函数
+ * @param e 事件对象
+ */
 static void event_handler(lv_event_t *e) {
   lv_event_code_t code = lv_event_get_code(e);
   dlog("%s: code = %d\n", PAGE_NAME, code);
@@ -90,9 +132,15 @@ static void event_handler(lv_event_t *e) {
     event_clicked_handler(e);
 }
 
+/**
+ * @brief 页面初始化函数
+ * @param gui 页面的GUI对象
+ * @return 返回初始化结果，0 表示成功，其他值表示失败
+ */
 int page_apps_init(page_gui *gui) {
   page_self_gui = gui;
 
+  // 创建应用列表行容器
   cont_row_app = lv_obj_create(page_self_gui);
   lv_group_add_obj(lv_group_get_default(), cont_row_app);
   // lv_obj_add_event_cb(cont_row_app, event_handler, LV_EVENT_KEY, NULL);
@@ -127,7 +175,8 @@ int page_apps_init(page_gui *gui) {
     lv_obj_clear_flag(obj, LV_OBJ_FLAG_SCROLLABLE);
 
     if (old_obj)
-      lv_obj_align_to(obj, old_obj, LV_ALIGN_OUT_RIGHT_TOP, APPS_APP_SPACING, 0);
+      lv_obj_align_to(obj, old_obj, LV_ALIGN_OUT_RIGHT_TOP, APPS_APP_SPACING,
+                      0);
     else
       lv_obj_align(obj, LV_ALIGN_LEFT_MID, 0, 0);
 
@@ -155,7 +204,7 @@ int page_apps_init(page_gui *gui) {
 
   switch_app(0);
 
-/* set status bar */
+  /* set status bar */
 #ifdef USE_STATUS_BAR
   set_status_bar(STATUS_BAR_ENABLE);
   set_status_bar_parent(page_self_gui);
