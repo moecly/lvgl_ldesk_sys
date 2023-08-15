@@ -7,6 +7,10 @@ void set_status_bar_state(int type, int state) {
 
 void set_status_bar(int state) { set_status_bar_state(STATUS_BAR, state); }
 
+void set_status_bar_parent(lv_obj_t *parent) {
+  status_bar_instance()->set_parent(parent);
+}
+
 void set_status_bar_time(int state) { set_status_bar_state(TIME, state); }
 
 void set_status_bar_title(int state) { set_status_bar_state(TITLE, state); }

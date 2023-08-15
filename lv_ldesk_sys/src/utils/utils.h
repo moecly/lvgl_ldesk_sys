@@ -11,6 +11,7 @@ extern "C" {
 #include "common/common.h"
 #include "list/list.h"
 #include "log_msg/log_msg.h"
+#include "lvgl_anim/lvgl_anim.h"
 #include "str_util/str_util.h"
 #include "sys_time/sys_time.h"
 

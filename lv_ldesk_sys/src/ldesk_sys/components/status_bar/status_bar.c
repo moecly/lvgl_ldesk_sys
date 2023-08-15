@@ -45,7 +45,6 @@ static void set_time(void) {
     strcpy(tmp, hour_str);
     hour_str[0] = '\0';
     strcpy(hour_str, ch);
-    DLOG_CURR();
     strcat(hour_str, tmp);
   }
 

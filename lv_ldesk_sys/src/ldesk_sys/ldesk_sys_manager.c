@@ -61,6 +61,6 @@ int ldesk_sys_load_page_from_id(uint32_t id) {
     return -1;
   }
   ldesk_sys_load_page(page);
-  set_status_bar_title_text(page->name);
+  // set_status_bar_title_text(page->name);
   return 0;
 }
