@@ -1,7 +1,7 @@
 #ifndef __LDESK_SYS_PAGE_OPR_H_
 #define __LDESK_SYS_PAGE_OPR_H_
 
-#include "ldesk_sys.h"
+#include "../ldesk_sys.h"
 
 void set_status_bar(int state);
 void set_status_bar_state(int type, int state);

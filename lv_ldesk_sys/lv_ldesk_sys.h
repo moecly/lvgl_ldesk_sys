@@ -31,9 +31,8 @@ extern "C" {
 #include "../lv_ldesk_sys_conf.h"
 #endif
 
-#include "src/ldesk_sys/ldesk_sys_manager.h"
+#include "src/ldesk_sys/ldesk_sys.h"
 #include "src/ldesk_sys_demo/ldesk_sys_demo.h"
-#include "src/page_apps/page_apps.h"
 #include "src/utils/utils.h"
 
 /*********************

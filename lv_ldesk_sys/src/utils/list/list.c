@@ -1,4 +1,5 @@
 #include "list.h"
+#include <stdint.h>
 
 pn_list *list_new(void) {
   pn_list *ret;
@@ -35,3 +36,23 @@ void list_push_to_tail(pn_list *list, void *val) {
   nd->val = (void *)val;
   list_push_node_to_tail(list, nd);
 }
+
+void *list_get_node_from_index(pn_list *list, uint32_t idx) {
+  list_node *nd;
+  uint32_t index = 0;
+  each_node_for_linked(nd, LIST_HEAD_NODE(list), next) {
+    if (index == idx)
+      return nd;
+    index++;
+  }
+  return NULL;
+}
+
+void *list_get_val_from_index(pn_list *list, uint32_t idx) {
+  list_node *nd = list_get_node_from_index(list, idx);
+  if (!nd)
+    return NULL;
+  return NODE_VAL(nd);
+}
+
+uint32_t list_get_length(pn_list *list) { return GET_LIST_LEN(list); }

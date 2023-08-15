@@ -15,6 +15,10 @@
 #define UNUSED(x) (void)(x)
 #endif // !UNUSED
 
+#ifndef ARRAY_LEN
+#define ARRAY_LEN(x) (sizeof(x) / sizeof(x[0]))
+#endif // !ARRAY_LEN
+
 #define each_node_for_linked(node, linked, property)                           \
   for (node = linked; node != NULL; node = node->property)
 

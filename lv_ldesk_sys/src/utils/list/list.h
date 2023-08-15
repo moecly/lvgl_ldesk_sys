@@ -103,5 +103,8 @@ void list_push_node_to_head(pn_list *list, list_node *nd);
 void list_push_node_to_tail(pn_list *list, list_node *nd);
 void list_push_to_head(pn_list *list, void *val);
 void list_push_to_tail(pn_list *list, void *val);
+void *list_get_node_from_index(pn_list *list, uint32_t idx);
+void *list_get_val_from_index(pn_list *list, uint32_t idx);
+uint32_t list_get_length(pn_list *list);
 
 #endif // !__LIST_H_

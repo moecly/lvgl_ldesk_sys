@@ -7,50 +7,58 @@
  * COPY THIS FILE AS lv_demo_conf.h
  */
 
-#if 0 /*Set it to "1" to enable the content*/
+#if 1 /*Set it to "1" to enable the content*/
 
-#ifndef __LV_LDESK_SYS_CONF_H_
-#define __LV_LDESK_SYS_CONF_H_
-
+#ifndef LV_LDESK_SYS_CONF_H
+#define LV_LDESK_SYS_CONF_H
 
 /*******************
  * GENERAL SETTING
  *******************/
-#define LV_EX_PRINTF       0       /*Enable printf-ing data in demoes and examples*/
-#define LV_EX_KEYBOARD     0       /*Add PC keyboard support to some examples (`lv_drivers` repository is required)*/
-#define LV_EX_MOUSEWHEEL   0       /*Add 'encoder' (mouse wheel) support to some examples (`lv_drivers` repository is required)*/
+#define LV_EX_PRINTF 1 /*Enable printf-ing data in demoes and examples*/
+#define LV_EX_KEYBOARD                                                         \
+  1 /*Add PC keyboard support to some examples (`lv_drivers` repository is     \
+       required)*/
+#define LV_EX_MOUSEWHEEL                                                       \
+  1 /*Add 'encoder' (mouse wheel) support to some examples (`lv_drivers`       \
+       repository is required)*/
 
 /*********************
- * DEMO USAGE
+ * LDESK SYS USAGE
  *********************/
+#define LDESK_SYS_DEMO 1
 
-/*Show some widget*/
-#define LV_USE_DEMO_WIDGETS        0
-#if LV_USE_DEMO_WIDGETS
-#define LV_DEMO_WIDGETS_SLIDESHOW  0
+#define GUI_WIDTH 280
+#define GUI_HEIGHT 240
+
+#if LDESK_SYS_DEMO
+
+/* apps */
+#define APPS_ROW_NUM 3
+#define APPS_APP_SPACING 10
+#define APPS_APP_SELECT_NEW_Y 15
+#define APPS_APP_NAME_HEIGHT 80
+#define APPS_SHADOW_COLOR LV_PALETTE_BLUE
+#define APPS_APP_NAME_BOTTOM_SPACING 10
+#define APPS_ICON_FONT_SIZE lv_font_montserrat_22
+#define APPS_APP_NAME_FONT_SIZE lv_font_montserrat_22
+#define APPS_APP_SHADOW_WIDTH 30
+
+/* status bar */
+#define USE_STATUS_BAR 1
+/* status bar configs */
+#define STATUS_BAR_HEIGHT 30
+/* status bar time configs */
+#define SHOW_STATUS_BAR_TIME 1
+#define STATUS_BAR_TIME_X_SPACING 5
+#define STATUS_BAR_TIME_y_SPACING 3
+/* status bar title config */
+#define SHOW_STATUS_BAR_TITLE 1
+#define STATUS_BAR_TITLE_X_SPACING 0
+#define STATUS_BAR_TITLE_y_SPACING 3
+
 #endif
 
-/*Printer demo, optimized for 800x480*/
-#define LV_USE_DEMO_PRINTER     0
-
-/*Demonstrate the usage of encoder and keyboard*/
-#define LV_USE_DEMO_KEYPAD_AND_ENCODER     0
-
-/*Benchmark your system*/
-#define LV_USE_DEMO_BENCHMARK   0
-
-/*Stress test for LVGL*/
-#define LV_USE_DEMO_STRESS      0
-
-/*Music player demo*/
-#define LV_USE_DEMO_MUSIC      1
-#if LV_USE_DEMO_MUSIC
-# define LV_DEMO_MUSIC_LANDSCAPE 0
-# define LV_DEMO_MUSIC_LARGE     0
-#define LV_DEMO_MUSIC_AUTO_PLAY  0
-#endif
-
-#endif /*LV_EX_CONF_H*/
+#endif /*LV_EX_CONF_H */
 
 #endif /*End of "Content enable"*/
-

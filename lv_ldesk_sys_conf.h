@@ -35,13 +35,14 @@
 
 /* apps */
 #define APPS_ROW_NUM 3
-#define APPS_SPACING 10
+#define APPS_APP_SPACING 10
 #define APPS_APP_SELECT_NEW_Y 15
 #define APPS_APP_NAME_HEIGHT 80
+#define APPS_SHADOW_COLOR LV_PALETTE_BLUE
 #define APPS_APP_NAME_BOTTOM_SPACING 10
 #define APPS_ICON_FONT_SIZE lv_font_montserrat_22
 #define APPS_APP_NAME_FONT_SIZE lv_font_montserrat_22
-#define APPS_SHADOW_WIDTH 30
+#define APPS_APP_SHADOW_WIDTH 30
 
 /* status bar */
 #define USE_STATUS_BAR 1

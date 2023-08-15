@@ -1,6 +1,4 @@
 #include "ldesk_sys_manager.h"
-#include "lv_ldesk_sys/src/ldesk_sys/ldesk_sys_page_opr.h"
-#include "lv_ldesk_sys/src/utils/log_msg/log_msg.h"
 #include "stdio.h"
 #include <stdint.h>
 #include <string.h>

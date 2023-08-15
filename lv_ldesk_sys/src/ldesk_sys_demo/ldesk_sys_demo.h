@@ -7,7 +7,6 @@ extern "C" {
 
 #include "../../lv_ldesk_sys.h"
 #include "ldesk_sys_page_conf.h"
-#include "lv_ldesk_sys/src/ldesk_sys_demo/ldesk_sys_page_conf.h"
 
 void ldesk_sys_demo_init(void);
 

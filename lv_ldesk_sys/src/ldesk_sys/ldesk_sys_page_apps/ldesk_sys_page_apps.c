@@ -1,16 +1,4 @@
-#include "page_apps.h"
-#include "lv_ldesk_sys/src/ldesk_sys/ldesk_sys_manager.h"
-#include "lv_ldesk_sys/src/ldesk_sys/ldesk_sys_page_opr.h"
-#include "lv_ldesk_sys/src/utils/common/common.h"
-#include "lv_ldesk_sys/src/utils/log_msg/log_msg.h"
-#include "src/core/lv_event.h"
-#include "src/core/lv_obj.h"
-#include "src/core/lv_obj_pos.h"
-#include "src/core/lv_obj_scroll.h"
-#include "src/core/lv_obj_tree.h"
-#include "src/font/lv_font.h"
-#include "src/misc/lv_anim.h"
-#include "src/widgets/lv_label.h"
+#include "ldesk_sys_page_apps.h"
 #include "stdio.h"
 #include <stdint.h>
 
@@ -20,11 +8,8 @@ static lv_obj_t *label_name;
 static char *PAGE_NAME = "apps";
 static uint32_t app_obj_size = 0;
 
-static const char *app_names[] = {"Book",       "Arduboy",  "NES",     "GPS",
-                                  "Calculator", "Calendar", "Setting", "About"};
-
 static void icon_add_shadow(lv_obj_t *obj) {
-  lv_obj_set_style_shadow_width(obj, APPS_SHADOW_WIDTH, LV_PART_MAIN);
+  lv_obj_set_style_shadow_width(obj, APPS_APP_SHADOW_WIDTH, LV_PART_MAIN);
   lv_obj_set_style_shadow_color(obj, lv_palette_main(LV_PALETTE_BLUE),
                                 LV_PART_MAIN);
 }
@@ -41,6 +26,7 @@ static void switch_app(uint32_t id) {
   lv_obj_t *parent = cont_row_app;
   lv_obj_t *old_child = lv_obj_get_child(parent, old_id);
   lv_obj_t *child = lv_obj_get_child(parent, id);
+  app_item *app = get_app_from_index(id);
   uint32_t to_x = 0;
 
   if (old_id == -1) {
@@ -52,12 +38,12 @@ static void switch_app(uint32_t id) {
   }
 
   if (id > 1)
-    to_x = (id - 1) * (app_obj_size + APPS_SPACING);
+    to_x = (id - 1) * (app_obj_size + APPS_APP_SPACING);
   else
     to_x = 0;
 
   lv_obj_scroll_to_x(parent, to_x, LV_ANIM_ON);
-  lv_label_set_text(label_name, app_names[id]);
+  lv_label_set_text(label_name, app->name);
 
   /* open app */
   if (old_id == id)
@@ -118,18 +104,19 @@ int page_apps_init(page_gui *gui) {
                           LV_PART_SCROLLBAR | LV_STATE_DEFAULT);
   lv_obj_set_style_bg_opa(cont_row_app, LV_OPA_0,
                           LV_PART_SCROLLBAR | LV_STATE_SCROLLED);
-  lv_obj_set_style_pad_all(cont_row_app, APPS_SPACING, 0);
+  lv_obj_set_style_pad_all(cont_row_app, APPS_APP_SPACING, 0);
   lv_obj_center(cont_row_app);
 
   uint32_t i;
   app_obj_size =
-      (GUI_WIDTH - ((APPS_ROW_NUM + 1) * APPS_SPACING)) / APPS_ROW_NUM;
-  uint32_t len = sizeof(app_names) / sizeof(app_names[0]);
+      (GUI_WIDTH - ((APPS_ROW_NUM + 1) * APPS_APP_SPACING)) / APPS_ROW_NUM;
+  uint32_t len = get_apps_length();
   lv_obj_t *old_obj = NULL;
 
   for (i = 0; i < len; i++) {
     lv_obj_t *obj;
     lv_obj_t *label;
+    app_item *app = get_app_from_index(i);
 
     obj = lv_obj_create(cont_row_app);
     lv_group_add_obj(lv_group_get_default(), obj);
@@ -140,7 +127,7 @@ int page_apps_init(page_gui *gui) {
     lv_obj_clear_flag(obj, LV_OBJ_FLAG_SCROLLABLE);
 
     if (old_obj)
-      lv_obj_align_to(obj, old_obj, LV_ALIGN_OUT_RIGHT_TOP, APPS_SPACING, 0);
+      lv_obj_align_to(obj, old_obj, LV_ALIGN_OUT_RIGHT_TOP, APPS_APP_SPACING, 0);
     else
       lv_obj_align(obj, LV_ALIGN_LEFT_MID, 0, 0);
 
@@ -148,13 +135,14 @@ int page_apps_init(page_gui *gui) {
     lv_obj_set_style_text_color(label, lv_palette_main(LV_PALETTE_DEEP_PURPLE),
                                 LV_PART_MAIN);
     lv_obj_set_style_text_font(label, &APPS_ICON_FONT_SIZE, LV_PART_MAIN);
-    lv_label_set_text(label, app_names[i]);
+    lv_label_set_text(label, app->icon);
     lv_obj_center(label);
     old_obj = obj;
   }
 
+  app_item *app = get_app_from_index(0);
   label_name = lv_label_create(page_self_gui);
-  lv_label_set_text(label_name, app_names[0]);
+  lv_label_set_text(label_name, app->name);
   lv_obj_set_style_text_color(label_name, lv_palette_main(LV_PALETTE_BLUE),
                               LV_PART_MAIN);
   lv_obj_set_style_text_font(label_name, &APPS_APP_NAME_FONT_SIZE,

@@ -5,7 +5,7 @@
 extern "C" {
 #endif
 
-#include "ldesk_sys.h"
+#include "../ldesk_sys.h"
 
 #ifndef page_gui
 #define page_gui lv_obj_t
