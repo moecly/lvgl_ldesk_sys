@@ -1,6 +1,7 @@
 /*
  * @brief: 应用管理系统模块，包括应用列表的管理
- * @file: ldesk_sys_app.h
+ * @file: ldesk_sys_app.c
+ * @author: moecly
  */
 
 #include "ldesk_sys_app.h"

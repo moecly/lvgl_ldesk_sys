@@ -1,6 +1,7 @@
 /*
  * @brief: LDesk系统演示的初始化文件
  * @file: ldesk_sys_demo.c
+ * @author: moecly
  */
 
 #include "ldesk_sys_demo.h"

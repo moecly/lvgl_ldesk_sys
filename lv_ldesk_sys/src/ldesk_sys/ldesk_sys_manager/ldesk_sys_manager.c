@@ -1,6 +1,7 @@
 /*
  * @brief: 桌面系统管理模块，用于管理页面对象和操作
- * @file: ldesk_sys_manager.h
+ * @file: ldesk_sys_manager.c
+ * @author: moecly
  */
 
 #include "ldesk_sys_manager.h"
@@ -103,6 +104,5 @@ int ldesk_sys_load_page_from_id(uint32_t id) {
     return -1;
   }
   ldesk_sys_load_page(page);
-  // set_status_bar_title_text(page->name);
   return 0;
 }

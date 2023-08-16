@@ -1,6 +1,7 @@
 /*
  * @brief: 应用管理系统模块头文件，定义应用项结构和管理函数声明
  * @file: ldesk_sys_app.h
+ * @author: moecly
  */
 
 #ifndef __LDESK_SYS_APP_H_

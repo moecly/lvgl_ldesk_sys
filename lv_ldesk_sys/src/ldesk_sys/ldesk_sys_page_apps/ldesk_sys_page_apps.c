@@ -1,6 +1,7 @@
 /*
  * @brief: 应用页面实现文件，定义应用页面的初始化和事件处理函数
- * @file: ldesk_sys_page_apps.h
+ * @file: ldesk_sys_page_apps.c
+ * @author: moecly
  */
 
 #include "ldesk_sys_page_apps.h"
@@ -141,6 +142,7 @@ int page_apps_init(page_gui *gui) {
   page_self_gui = gui;
 
   // 创建应用列表行容器
+  // 设置行容器的样式、事件处理等
   cont_row_app = lv_obj_create(page_self_gui);
   lv_group_add_obj(lv_group_get_default(), cont_row_app);
   // lv_obj_add_event_cb(cont_row_app, event_handler, LV_EVENT_KEY, NULL);
@@ -155,6 +157,8 @@ int page_apps_init(page_gui *gui) {
   lv_obj_set_style_pad_all(cont_row_app, APPS_APP_SPACING, 0);
   lv_obj_center(cont_row_app);
 
+  // 创建应用图标和名称标签
+  // 设置图标和名称标签的样式、事件处理等
   uint32_t i;
   app_obj_size =
       (GUI_WIDTH - ((APPS_ROW_NUM + 1) * APPS_APP_SPACING)) / APPS_ROW_NUM;
@@ -202,10 +206,13 @@ int page_apps_init(page_gui *gui) {
   /* set focus */
   lv_group_focus_obj(cont_row_app);
 
+  // 切换到第一个应用
   switch_app(0);
 
-  /* set status bar */
+  // 设置状态栏
 #ifdef USE_STATUS_BAR
+  // 设置状态栏为启用
+  // 设置状态栏的父对象、时间显示等
   set_status_bar(STATUS_BAR_ENABLE);
   set_status_bar_parent(page_self_gui);
 

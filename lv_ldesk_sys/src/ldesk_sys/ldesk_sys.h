@@ -1,6 +1,7 @@
 /*
  * @brief: LDesk 系统库头文件
  * @file: ldesk_sys.h
+ * @author: moecly
  */
 
 #ifndef __LDESK_SYS_H_

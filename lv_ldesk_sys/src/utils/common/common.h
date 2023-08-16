@@ -1,6 +1,7 @@
 /*
  * @brief: 包含通用函数和声明的头文件
  * @file: common.h
+ * @author: moecly
  */
 
 #ifndef __COMMON_H_

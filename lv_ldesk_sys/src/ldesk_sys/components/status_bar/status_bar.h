@@ -1,6 +1,7 @@
 /*
  * @brief: 状态栏模块头文件，定义了状态栏相关结构和函数接口
  * @file: status_bar.h
+ * @author: moecly
  */
 
 #ifndef __STATUS_BAR_H

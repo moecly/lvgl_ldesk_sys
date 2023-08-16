@@ -1,6 +1,7 @@
 /*
  * @brief: 状态栏模块，用于管理状态栏显示和操作
- * @file: status_bar.h
+ * @file: status_bar.c
+ * @author: moecly
  */
 
 #include "status_bar.h"
@@ -132,7 +133,7 @@ static void status_bar_init(void) {
   // 设置时间标签的样式
   lv_label_set_text(label_time, "07 : 00");
   lv_obj_set_size(label_time, LV_SIZE_CONTENT, STATUS_BAR_HEIGHT);
-  lv_obj_set_style_text_font(label_time, &lv_font_montserrat_14, 0);
+  lv_obj_set_style_text_font(label_time, &STATUS_BAR_TIME_TEXT_SIZE, 0);
   lv_obj_set_style_text_color(label_time, lv_palette_main(LV_PALETTE_BLUE), 0);
   lv_obj_align(label_time, LV_ALIGN_LEFT_MID, STATUS_BAR_TIME_X_SPACING,
                STATUS_BAR_TIME_y_SPACING);
@@ -140,10 +141,11 @@ static void status_bar_init(void) {
   // 创建页面名称标签
   lv_obj_t *label_title = lv_label_create(bar->bar);
   elem.title.id = lv_obj_get_child_id(label_title);
+
   // 设置页面名称标签的样式
   lv_label_set_text(label_title, "");
   lv_obj_set_size(label_title, LV_SIZE_CONTENT, STATUS_BAR_HEIGHT);
-  lv_obj_set_style_text_font(label_title, &lv_font_montserrat_14, 0);
+  lv_obj_set_style_text_font(label_title, &STATUS_BAR_TITLE_TEXT_SIZE, 0);
   lv_obj_set_style_text_color(label_title, lv_palette_main(LV_PALETTE_BLUE), 0);
   lv_obj_align(label_title, LV_ALIGN_CENTER, STATUS_BAR_TITLE_X_SPACING,
                STATUS_BAR_TITLE_y_SPACING);

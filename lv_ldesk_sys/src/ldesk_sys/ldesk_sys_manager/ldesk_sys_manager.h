@@ -1,6 +1,7 @@
 /*
  * @brief: 系统管理模块头文件，定义页面对象和管理函数声明
  * @file: ldesk_sys_manager.h
+ * @author: moecly
  */
 
 #ifndef __LDESK_SYS_MANAGER_H_

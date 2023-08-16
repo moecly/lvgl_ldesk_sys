@@ -1,6 +1,7 @@
 /*
  * @brief: 页面配置文件的实现
  * @file: ldesk_sys_page_conf.c
+ * @author: moecly
  */
 
 #include "ldesk_sys_page_conf.h"

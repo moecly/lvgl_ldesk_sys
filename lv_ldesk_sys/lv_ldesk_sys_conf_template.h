@@ -50,10 +50,12 @@
 #define STATUS_BAR_HEIGHT 30
 /* status bar time configs */
 #define SHOW_STATUS_BAR_TIME 1
+#define STATUS_BAR_TIME_TEXT_SIZE lv_font_montserrat_14
 #define STATUS_BAR_TIME_X_SPACING 5
 #define STATUS_BAR_TIME_y_SPACING 3
 /* status bar title config */
 #define SHOW_STATUS_BAR_TITLE 1
+#define STATUS_BAR_TITLE_TEXT_SIZE lv_font_montserrat_14
 #define STATUS_BAR_TITLE_X_SPACING 0
 #define STATUS_BAR_TITLE_y_SPACING 3
 
