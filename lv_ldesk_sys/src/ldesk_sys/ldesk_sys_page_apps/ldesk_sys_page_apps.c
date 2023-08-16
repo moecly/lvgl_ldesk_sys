@@ -82,7 +82,7 @@ static void switch_app(uint32_t id) {
 
   // 打开应用
   if (old_id == id) {
-    ldesk_sys_disp_page_from_id(PAGE_SETTING, NULL, NULL,
+    ldesk_sys_disp_page_from_id(app->page_id, NULL, NULL,
                                 LV_SCR_LOAD_ANIM_MOVE_BOTTOM);
     return;
   }

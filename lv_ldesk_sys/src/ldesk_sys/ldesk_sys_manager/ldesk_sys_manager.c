@@ -5,6 +5,7 @@
  */
 
 #include "ldesk_sys_manager.h"
+#include "lv_ldesk_sys/src/utils/list/list.h"
 #include "lv_ldesk_sys/src/utils/log_msg/log_msg.h"
 #include "src/core/lv_disp.h"
 #include "src/core/lv_obj_tree.h"
@@ -110,10 +111,14 @@ page_object *ldesk_sys_get_page_from_id(uint32_t id) {
   page_object *res;
   list_node *nd;
   each_node_for_linked(nd, LIST_HEAD_NODE(page_list), next) {
+    if (nd == LIST_TAIL(page_list))
+      break;
+
     res = (page_object *)NODE_VAL(nd);
     if (res->id == id)
       return res;
   }
+
   ELOG_CURR();
   return NULL;
 }

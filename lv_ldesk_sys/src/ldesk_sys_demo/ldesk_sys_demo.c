@@ -10,13 +10,41 @@
 
 // 预定义的应用项数组
 static app_item apps[] = {
-    {.name = "Book", .icon = "Book"},
-    {.name = "Arduboy", .icon = "Arduboy"},
-    {.name = "NES", .icon = "NES"},
-    {.name = "Setting", .icon = "Setting"},
-    {.name = "Calculator", .icon = "Calculator"},
-    {.name = "Calendar", .icon = "Calendar"},
-    {.name = "Arduboy", .icon = "Arduboy"},
+    {
+        .name = "Book",
+        .icon = "Book",
+        .page_id = PAGE_NULL,
+    },
+    {
+        .name = "Arduboy",
+        .icon = "Arduboy",
+        .page_id = PAGE_NULL,
+    },
+    {
+        .name = "NES",
+        .icon = "NES",
+        .page_id = PAGE_NULL,
+    },
+    {
+        .name = "Setting",
+        .icon = "Setting",
+        .page_id = PAGE_SETTING,
+    },
+    {
+        .name = "Calculator",
+        .icon = "Calculator",
+        .page_id = PAGE_NULL,
+    },
+    {
+        .name = "Calendar",
+        .icon = "Calendar",
+        .page_id = PAGE_NULL,
+    },
+    {
+        .name = "moecly",
+        .icon = "moecly",
+        .page_id = PAGE_NULL,
+    },
 };
 
 /**

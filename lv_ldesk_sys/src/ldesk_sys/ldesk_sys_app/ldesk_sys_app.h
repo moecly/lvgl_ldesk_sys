@@ -7,12 +7,13 @@
 #ifndef __LDESK_SYS_APP_H_
 #define __LDESK_SYS_APP_H_
 
-#include "../ldesk_sys.h"
+#include "../ldesk_sys.h" // Include the main LDesk system header
 
 // 应用项结构体
 typedef struct {
   char *name; // 应用名称
   char *icon; // 应用图标
+  uint32_t page_id;
 } app_item;
 
 /*

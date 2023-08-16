@@ -7,7 +7,7 @@
 #include "log_msg.h"
 
 // 默认日志输出级别为 DEBUG
-static LOG_LEVEL level = DEBUG;
+static LOG_LEVEL level = ERROR;
 
 /**
  * @brief: 输出日志消息
