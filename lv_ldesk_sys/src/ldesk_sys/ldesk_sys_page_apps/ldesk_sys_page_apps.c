@@ -5,6 +5,8 @@
  */
 
 #include "ldesk_sys_page_apps.h"
+#include "lv_ldesk_sys/src/ldesk_sys/ldesk_sys_app/ldesk_sys_app.h"
+#include "src/core/lv_obj.h"
 #include "stdio.h"
 #include <stdint.h>
 
@@ -133,44 +135,39 @@ static void event_handler(lv_event_t *e) {
     event_clicked_handler(e);
 }
 
-/**
- * @brief 页面初始化函数
- * @param gui 页面的GUI对象
- * @return 返回初始化结果，0 表示成功，其他值表示失败
- */
-int page_apps_init(page_gui *gui) {
-  page_self_gui = gui;
-
-  // 创建应用列表行容器
+static void cont_row_obj_init(lv_obj_t *cont_row_obj, lv_obj_t *parent) {
   // 设置行容器的样式、事件处理等
-  cont_row_app = lv_obj_create(page_self_gui);
-  lv_group_add_obj(lv_group_get_default(), cont_row_app);
+  lv_group_add_obj(lv_group_get_default(), cont_row_obj);
   // lv_obj_add_event_cb(cont_row_app, event_handler, LV_EVENT_KEY, NULL);
-  lv_obj_add_event_cb(cont_row_app, event_handler, LV_EVENT_SCROLL_END, NULL);
-  lv_obj_set_size(cont_row_app, GUI_WIDTH,
+  lv_obj_add_event_cb(cont_row_obj, event_handler, LV_EVENT_SCROLL_END, NULL);
+  lv_obj_set_size(cont_row_obj, GUI_WIDTH,
                   GUI_HEIGHT - APPS_APP_NAME_HEIGHT - STATUS_BAR_HEIGHT);
-  lv_obj_set_style_border_width(cont_row_app, 0, 0);
-  lv_obj_set_style_bg_opa(cont_row_app, LV_OPA_0,
+  lv_obj_set_style_border_width(cont_row_obj, 0, 0);
+  lv_obj_set_style_bg_opa(cont_row_obj, LV_OPA_0,
                           LV_PART_SCROLLBAR | LV_STATE_DEFAULT);
-  lv_obj_set_style_bg_opa(cont_row_app, LV_OPA_0,
+  lv_obj_set_style_bg_opa(cont_row_obj, LV_OPA_0,
                           LV_PART_SCROLLBAR | LV_STATE_SCROLLED);
-  lv_obj_set_style_pad_all(cont_row_app, APPS_APP_SPACING, 0);
-  lv_obj_center(cont_row_app);
+  lv_obj_set_style_pad_all(cont_row_obj, APPS_APP_SPACING, 0);
+  lv_obj_center(cont_row_obj);
+}
 
-  // 创建应用图标和名称标签
-  // 设置图标和名称标签的样式、事件处理等
+static void apps_icon_init(lv_obj_t *cont_row_obj) {
   uint32_t i;
+  // app icon size
   app_obj_size =
       (GUI_WIDTH - ((APPS_ROW_NUM + 1) * APPS_APP_SPACING)) / APPS_ROW_NUM;
-  uint32_t len = get_apps_length();
+
+  // app number
+  uint32_t len = get_apps_number();
   lv_obj_t *old_obj = NULL;
 
+  // create app icon.
   for (i = 0; i < len; i++) {
     lv_obj_t *obj;
     lv_obj_t *label;
     app_item *app = get_app_from_index(i);
 
-    obj = lv_obj_create(cont_row_app);
+    obj = lv_obj_create(cont_row_obj);
     lv_group_add_obj(lv_group_get_default(), obj);
     lv_obj_add_event_cb(obj, event_handler, LV_EVENT_KEY, NULL);
     lv_obj_add_event_cb(obj, event_handler, LV_EVENT_CLICKED, NULL);
@@ -192,9 +189,11 @@ int page_apps_init(page_gui *gui) {
     lv_obj_center(label);
     old_obj = obj;
   }
+}
 
+static void apps_label_init(lv_obj_t *parent) {
   app_item *app = get_app_from_index(0);
-  label_name = lv_label_create(page_self_gui);
+  label_name = lv_label_create(parent);
   lv_label_set_text(label_name, app->name);
   lv_obj_set_style_text_color(label_name, lv_palette_main(LV_PALETTE_BLUE),
                               LV_PART_MAIN);
@@ -202,6 +201,27 @@ int page_apps_init(page_gui *gui) {
                              LV_PART_MAIN);
   lv_obj_align(label_name, LV_ALIGN_BOTTOM_MID, 0,
                -APPS_APP_NAME_BOTTOM_SPACING);
+}
+
+/**
+ * @brief 页面初始化函数
+ * @param gui 页面的GUI对象
+ * @return 返回初始化结果，0 表示成功，其他值表示失败
+ */
+int page_apps_init(page_gui *gui) {
+  page_self_gui = gui;
+
+  // 创建应用列表行容器
+  cont_row_app = lv_obj_create(page_self_gui);
+  cont_row_obj_init(cont_row_app, page_self_gui);
+
+  // 创建应用图标和名称标签
+  // 设置图标和名称标签的样式、事件处理等
+  apps_icon_init(cont_row_app);
+
+  // 创建名称标签
+  // 设置名称标签的样式
+  apps_label_init(page_self_gui);
 
   /* set focus */
   lv_group_focus_obj(cont_row_app);

@@ -37,6 +37,6 @@ app_item *get_app_from_index(uint32_t index);
  * @brief: 获取应用列表的长度
  * @return: 应用列表的长度
  */
-uint32_t get_apps_length(void);
+uint32_t get_apps_number(void);
 
 #endif // !__LDESK_SYS_APP_H_
