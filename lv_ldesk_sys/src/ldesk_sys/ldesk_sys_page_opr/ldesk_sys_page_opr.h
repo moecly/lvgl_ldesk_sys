@@ -46,4 +46,34 @@ void set_status_bar_title_text(char *title);
  */
 void set_status_bar_parent(lv_obj_t *parent);
 
+int ldesk_sys_disp_page_from_id(uint32_t id, void *create_params,
+                                void *del_params, lv_scr_load_anim_t load_anim);
+
+/*
+ * @brief: 加载页面到屏幕
+ * @param page: 页面对象指针
+ */
+void ldesk_sys_load_page(struct page_object *page,
+                         lv_scr_load_anim_t load_anim);
+
+/*
+ * @brief: 根据ID加载页面到屏幕
+ * @param id: 页面ID
+ * @return: 成功返回0，失败返回-1
+ */
+int ldesk_sys_load_page_from_id(uint32_t id, lv_scr_load_anim_t load_anim);
+
+/*
+ * @brief: 创建页面
+ * @param id: 页面ID
+ * @return: 成功返回0，失败返回-1
+ */
+int ldesk_sys_create_page_from_id(uint32_t id, void *data);
+
+int ldesk_sys_create_page(struct page_object *page, void *data);
+
+int ldesk_sys_exit_page_from_id(uint32_t id, void *data);
+
+int ldesk_sys_exit_page(struct page_object *page, void *data);
+
 #endif // !__LDESK_SYS_PAGE_OPR_H_

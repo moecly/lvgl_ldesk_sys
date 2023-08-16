@@ -29,58 +29,6 @@ void ldesk_sys_add_page(page_object *page) {
   list_push_to_tail(page_list, page);
 }
 
-int ldesk_sys_create_page(page_object *page, void *data) {
-  // 调用页面初始化句柄函数
-  if (validate_pointer(page)) {
-    ELOG_CURR();
-    return -1;
-  }
-
-  // 创建页面GUI对象
-  page->gui = lv_obj_create(NULL);
-  lv_obj_set_size(page->gui, GUI_WIDTH, GUI_HEIGHT);
-  lv_obj_set_style_bg_color(page->gui, lv_color_white(), LV_PART_MAIN);
-  lv_obj_clear_flag(page->gui, LV_OBJ_FLAG_SCROLLABLE);
-  lv_obj_center(page->gui);
-
-  return page->ops.init_handle(get_page_gui(page), NULL);
-}
-
-/*
- * @brief: 根据ID创建一个页面
- * @param id: 页面的ID
- * @return: 返回页面创建状态，成功返回0，失败返回-1
- */
-int ldesk_sys_create_page_from_id(uint32_t id, void *data) {
-  page_object *page = ldesk_sys_get_page_from_id(id);
-  dlog("create page id = %d\n", id);
-  return ldesk_sys_create_page(page, data);
-}
-
-int ldesk_sys_del_page(page_object *page, void *data) {
-  int ret;
-
-  // 调用页面初始化句柄函数
-  if (validate_pointer(page)) {
-    ELOG_CURR();
-    return -1;
-  }
-
-  ret = page->ops.exit_handle(get_page_gui(page), data);
-  if (ret) {
-    ELOG_CURR();
-    return -1;
-  }
-
-  return 0;
-}
-
-int ldesk_sys_del_page_from_id(uint32_t id, void *data) {
-  page_object *page = ldesk_sys_get_page_from_id(id);
-  dlog("del page id = %d\n", id);
-  return ldesk_sys_del_page(page, data);
-}
-
 /*
  * @brief: 获取页面的GUI对象
  * @param page: 页面对象指针
@@ -121,55 +69,4 @@ page_object *ldesk_sys_get_page_from_id(uint32_t id) {
 
   ELOG_CURR();
   return NULL;
-}
-
-/*
- * @brief: 加载页面到屏幕
- * @param page: 页面对象指针
- */
-void ldesk_sys_load_page(page_object *page, lv_scr_load_anim_t load_anim) {
-  lv_scr_load_anim(page->gui, load_anim, PAGE_SWITCH_TIME, 0, 1);
-}
-
-/*
- * @brief: 根据ID加载页面到屏幕
- * @param id: 页面的ID
- * @return: 返回页面加载状态，成功返回0，失败返回-1
- */
-int ldesk_sys_load_page_from_id(uint32_t id, lv_scr_load_anim_t load_anim) {
-  page_object *page = ldesk_sys_get_page_from_id(id);
-  if (validate_pointer(page)) {
-    ELOG_CURR();
-    return -1;
-  }
-  ldesk_sys_load_page(page, load_anim);
-  return 0;
-}
-
-int ldesk_sys_disp_page_from_id(uint32_t id, void *create_params,
-                                void *del_params,
-                                lv_scr_load_anim_t load_anim) {
-  int ret;
-  static uint32_t old_id = -1;
-
-  if (old_id == id)
-    return 0;
-
-  ret = ldesk_sys_create_page_from_id(id, (void *)&create_params);
-  if (ret) {
-    ELOG_CURR();
-    return -1;
-  }
-
-  ret = ldesk_sys_load_page_from_id(id, load_anim);
-  if (ret) {
-    ELOG_CURR();
-    return -1;
-  }
-
-  if (old_id != -1)
-    ldesk_sys_del_page_from_id(old_id, (void *)&del_params);
-
-  old_id = id;
-  return 0;
 }

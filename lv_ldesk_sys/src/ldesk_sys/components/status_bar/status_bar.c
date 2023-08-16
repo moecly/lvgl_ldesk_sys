@@ -16,20 +16,34 @@ static status_bar *bar;
 // 全局状态栏元素
 static bar_elem elem;
 
+/*
+ * @brief: 函数用于显示或隐藏状态栏，并使用动画实现平滑的过渡效果
+ * @params is_show:
+ *      STATUS_BAR_ENABLE显示
+ *      STATUS_BAR_DISABLE不显示
+ */
 static void bar_show(int is_show) {
+  // 创建一个 LVGL 动画对象
   lv_anim_t anim;
+
+  // 如果需要显示状态栏，且当前状态为隐藏状态
   if (is_show == STATUS_BAR_ENABLE &&
       elem.status_bar.state == STATUS_BAR_DISABLE) {
+    // 添加一个动画：从隐藏状态移动到显示状态
     ANIM_LINE_ADD(&anim, anim_y_cb, lv_anim_path_overshoot, NULL,
                   STATUS_BAR_ANIM_DURATION, 0, STATUS_BAR_ANIM_DELAY, bar->bar,
                   STATUS_BAR_START_LOCA, 0, 0);
-    lv_anim_start(&anim);
+    lv_anim_start(&anim); // 启动动画
   }
+
+  // 如果需要隐藏状态栏，且当前状态为显示状态
   if (is_show == STATUS_BAR_DISABLE &&
       elem.status_bar.state == STATUS_BAR_ENABLE) {
+    // 添加一个动画：从显示状态移动到隐藏状态
     ANIM_LINE_ADD(&anim, anim_y_cb, lv_anim_path_overshoot, NULL,
                   STATUS_BAR_ANIM_DURATION, 0, STATUS_BAR_ANIM_DELAY, bar->bar,
                   0, STATUS_BAR_START_LOCA, 0);
+    // 启动动画
     lv_anim_start(&anim);
   }
 }
@@ -102,7 +116,9 @@ static void set_time(void) {
   int_num_to_str(hour_str, hour);     // 将小时转换为字符串
   int_num_to_str(minute_str, minute); // 将分钟转换为字符串
 
-  // 格式化小时和分钟的显示
+  /*
+   * 格式化小时和分钟的显示
+   */
   if (hour < 10) {
     char tmp[32];
     char ch[2] = {'0', '\0'};
@@ -144,7 +160,9 @@ static void status_bar_init(void) {
   // 创建状态栏对象
   bar->bar = lv_obj_create(lv_scr_act());
 
-  // 进行状态栏的样式设置
+  /*
+   *进行状态栏的样式设置
+   */
   elem.status_bar.state = STATUS_BAR_ENABLE;
   lv_obj_set_size(bar->bar, GUI_WIDTH, STATUS_BAR_HEIGHT);
   lv_obj_set_style_border_width(bar->bar, 0, 0);
@@ -160,7 +178,9 @@ static void status_bar_init(void) {
   lv_obj_t *label_time = lv_label_create(bar->bar);
   elem.time.id = lv_obj_get_child_id(label_time);
 
-  // 设置时间标签的样式
+  /*
+   * 设置时间标签的样式
+   */
   elem.time.state = STATUS_BAR_ENABLE;
   lv_label_set_text(label_time, "07 : 00");
   lv_obj_set_size(label_time, LV_SIZE_CONTENT, STATUS_BAR_HEIGHT);
@@ -173,7 +193,9 @@ static void status_bar_init(void) {
   lv_obj_t *label_title = lv_label_create(bar->bar);
   elem.title.id = lv_obj_get_child_id(label_title);
 
-  // 设置页面名称标签的样式
+  /*
+   * 设置页面名称标签的样式
+   */
   elem.title.state = STATUS_BAR_ENABLE;
   lv_label_set_text(label_title, "");
   lv_obj_set_size(label_title, LV_SIZE_CONTENT, STATUS_BAR_HEIGHT);
@@ -182,7 +204,9 @@ static void status_bar_init(void) {
   lv_obj_align(label_title, LV_ALIGN_CENTER, STATUS_BAR_TITLE_X_SPACING,
                STATUS_BAR_TITLE_y_SPACING);
 
-  // 创建定时器
+  /*
+   * 创建定时器
+   */
   lv_timer_t *lv_timer = lv_timer_create(status_bar_time_task, 1200, NULL);
   UNUSED(lv_timer);
 }
@@ -195,7 +219,9 @@ status_bar *status_bar_instance(void) {
   if (bar)
     return bar;
 
-  // 创建状态栏实例并进行初始化
+  /*
+   * 创建状态栏实例并进行初始化
+   */
   bar = MALLOC_FUNC(status_bar);
   bar->set_state = status_bar_set_state;
   bar->set_parent = status_bar_set_parent;

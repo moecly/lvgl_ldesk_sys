@@ -9,11 +9,13 @@
 
 #include "../ldesk_sys.h" // Include the main LDesk system header
 
-// 应用项结构体
+/*
+ * 应用项结构体
+ */
 typedef struct {
   char *name; // 应用名称
   char *icon; // 应用图标
-  uint32_t page_id;
+  uint32_t page_id; // 页面id
 } app_item;
 
 /*

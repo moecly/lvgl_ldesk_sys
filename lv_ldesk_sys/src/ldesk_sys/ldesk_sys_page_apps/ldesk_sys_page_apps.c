@@ -180,7 +180,9 @@ static void apps_icon_init(lv_obj_t *cont_row_obj) {
   uint32_t len = get_apps_number();
   lv_obj_t *old_obj = NULL;
 
-  // create app icon.
+  /*
+   * create app icon.
+   */
   for (i = 0; i < len; i++) {
     lv_obj_t *obj;
     lv_obj_t *label;
@@ -211,7 +213,6 @@ static void apps_icon_init(lv_obj_t *cont_row_obj) {
 }
 
 static void set_apps_label(int is_show, lv_anim_ready_cb_t anim_ready_cb) {
-  // 动画
   lv_anim_t anim;
   if (is_show == SHOW) {
     ANIM_LINE_ADD(&anim, anim_y_cb, lv_anim_path_overshoot, anim_ready_cb,
@@ -240,7 +241,6 @@ static void apps_label_init(lv_obj_t *parent) {
   lv_obj_align(label_name, LV_ALIGN_BOTTOM_MID, 0,
                -APPS_APP_NAME_BOTTOM_SPACING);
 
-  // 动画
   set_apps_label(SHOW, NULL);
 }
 
@@ -272,8 +272,10 @@ int page_apps_init(lv_obj_t *gui, void *data) {
 
   // 设置状态栏
 #ifdef USE_STATUS_BAR
-  // 设置状态栏的父对象、时间显示等
-  // 设置状态栏为启用
+  /*
+   * 设置状态栏的父对象、时间显示等
+   * 设置状态栏为启用
+   */
   set_status_bar_parent(page_self_gui);
   set_status_bar(STATUS_BAR_ENABLE);
 
