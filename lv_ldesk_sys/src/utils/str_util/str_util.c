@@ -12,5 +12,5 @@
  * @param num: 要转换的整数
  */
 void int_num_to_str(char *str, int num) {
-  sprintf(str, "%d", num); // 将数字转换为字符串
+  sprintf(str, "%d", num); /* 将数字转换为字符串 */
 }

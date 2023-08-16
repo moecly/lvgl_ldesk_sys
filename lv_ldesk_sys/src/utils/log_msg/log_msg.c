@@ -6,7 +6,7 @@
 
 #include "log_msg.h"
 
-// 默认日志输出级别为 DEBUG
+/* 默认日志输出级别为 DEBUG */
 static LOG_LEVEL level = ERROR;
 
 /**
@@ -16,11 +16,11 @@ static LOG_LEVEL level = ERROR;
  * @param ...: 可变参数列表
  */
 void log_msg(LOG_LEVEL lv, const char *format, ...) {
-  // 如果日志级别高于设定的输出级别，直接返回
+  /* 如果日志级别高于设定的输出级别，直接返回 */
   if (lv > level)
     return;
 
-  // 使用可变参数列表打印日志消息
+  /* 使用可变参数列表打印日志消息 */
   PRINT_LOG(format);
 }
 
@@ -30,11 +30,11 @@ void log_msg(LOG_LEVEL lv, const char *format, ...) {
  * @param ...: 可变参数列表
  */
 void dlog(const char *format, ...) {
-  // 如果日志级别低于 DEBUG，直接返回
+  /* 如果日志级别低于 DEBUG，直接返回 */
   if (level < DEBUG)
     return;
 
-  // 使用可变参数列表打印 DEBUG 级别日志消息
+  /* 使用可变参数列表打印 DEBUG 级别日志消息 */
   PRINT_LOG(format);
 }
 
@@ -44,11 +44,11 @@ void dlog(const char *format, ...) {
  * @param ...: 可变参数列表
  */
 void elog(const char *format, ...) {
-  // 如果日志级别低于 ERROR，直接返回
+  /* 如果日志级别低于 ERROR，直接返回 */
   if (level < ERROR)
     return;
 
-  // 使用可变参数列表打印 ERROR 级别日志消息
+  /* 使用可变参数列表打印 ERROR 级别日志消息 */
   PRINT_LOG(format);
 }
 
@@ -58,11 +58,11 @@ void elog(const char *format, ...) {
  * @param ...: 可变参数列表
  */
 void wlog(const char *format, ...) {
-  // 如果日志级别低于 WARNING，直接返回
+  /* 如果日志级别低于 WARNING，直接返回 */
   if (level < WARNING)
     return;
 
-  // 使用可变参数列表打印 WARNING 级别日志消息
+  /* 使用可变参数列表打印 WARNING 级别日志消息 */
   PRINT_LOG(format);
 }
 
@@ -72,10 +72,10 @@ void wlog(const char *format, ...) {
  * @param ...: 可变参数列表
  */
 void ilog(const char *format, ...) {
-  // 如果日志级别低于 INFO，直接返回
+  /* 如果日志级别低于 INFO，直接返回 */
   if (level < INFO)
     return;
 
-  // 使用可变参数列表打印 INFO 级别日志消息
+  /* 使用可变参数列表打印 INFO 级别日志消息 */
   PRINT_LOG(format);
 }

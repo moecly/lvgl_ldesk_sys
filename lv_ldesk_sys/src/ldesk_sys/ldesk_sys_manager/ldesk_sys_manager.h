@@ -21,18 +21,18 @@ extern "C" {
  * 页面操作句柄结构体
  */
 typedef struct {
-  int (*init_handle)(page_gui *gui, void *data); // 初始化句柄函数指针
-  int (*exit_handle)(page_gui *gui, void *data); // 初始化句柄函数指针
+  int (*init_handle)(page_gui *gui, void *data); /* 初始化句柄函数指针 */
+  int (*exit_handle)(page_gui *gui, void *data); /* 初始化句柄函数指针 */
 } page_ops;
 
 /*
  * 页面对象结构体
  */
 typedef struct page_object {
-  uint32_t id;   // 页面ID
-  char *name;    // 页面名称
-  page_gui *gui; // 页面GUI对象
-  page_ops ops;  // 页面操作句柄
+  uint32_t id;   /* 页面ID */
+  char *name;    /* 页面名称 */
+  page_gui *gui; /* 页面GUI对象 */
+  page_ops ops;  /* 页面操作句柄 */
 } page_object;
 
 /*

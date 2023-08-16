@@ -15,18 +15,18 @@
  * @brief: 链表节点结构定义
  */
 typedef struct list_node {
-  struct list_node *prev; // 指向前一个节点
-  struct list_node *next; // 指向后一个节点
-  void *val;              // 节点存储的值
+  struct list_node *prev; /* 指向前一个节点 */
+  struct list_node *next; /* 指向后一个节点 */
+  void *val;              /* 节点存储的值 */
 } list_node;
 
 /**
  * @brief: 链表结构定义
  */
 typedef struct {
-  list_node *head; // 链表头节点
-  list_node *tail; // 链表尾节点
-  uint32_t len;    // 链表长度
+  list_node *head; /* 链表头节点 */
+  list_node *tail; /* 链表尾节点 */
+  uint32_t len;    /* 链表长度 */
 } pn_list;
 
 #ifndef NULL

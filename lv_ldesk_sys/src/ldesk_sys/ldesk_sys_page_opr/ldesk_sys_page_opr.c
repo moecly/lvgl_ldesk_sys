@@ -87,13 +87,13 @@ int ldesk_sys_disp_page_from_id(uint32_t id, void *create_params,
 int ldesk_sys_exit_page(page_object *page, void *data) {
   int ret;
 
-  // 调用页面初始化句柄函数
+  /* 调用页面初始化句柄函数 */
   if (validate_pointer(page)) {
     ELOG_CURR();
     return -1;
   }
 
-  // 调用页面操作中的退出句柄函数，执行页面特定的退出操作
+  /* 调用页面操作中的退出句柄函数，执行页面特定的退出操作 */
   ret = page->ops.exit_handle(get_page_gui(page), data);
   if (ret) {
     ELOG_CURR();
@@ -150,15 +150,15 @@ int ldesk_sys_load_page_from_id(uint32_t id, lv_scr_load_anim_t load_anim) {
  * 创建一个页面对象，并初始化页面的GUI部分和数据
  */
 int ldesk_sys_create_page(page_object *page, void *data) {
-  // 调用页面初始化句柄函数
+  /* 调用页面初始化句柄函数 */
   if (validate_pointer(page)) {
-    // 记录错误日志，说明是在哪里发生了指针无效的情况
+    /* 记录错误日志，说明是在哪里发生了指针无效的情况 */
     ELOG_CURR();
-    // 返回错误代码
+    /* 返回错误代码 */
     return -1;
   }
 
-  // 创建页面GUI对象
+  /* 创建页面GUI对象 */
   page->gui = lv_obj_create(NULL);
 
   /*
@@ -169,6 +169,6 @@ int ldesk_sys_create_page(page_object *page, void *data) {
   lv_obj_clear_flag(page->gui, LV_OBJ_FLAG_SCROLLABLE);
   lv_obj_center(page->gui);
 
-  // 调用页面的初始化句柄函数来进行页面特定的初始化
+  /* 调用页面的初始化句柄函数来进行页面特定的初始化 */
   return page->ops.init_handle(get_page_gui(page), NULL);
 }

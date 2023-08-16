@@ -18,19 +18,19 @@
 #include "stdio.h"
 #include <stdint.h>
 
-// 页面GUI对象
+/* 页面GUI对象 */
 static page_gui *page_self_gui;
 
-// 应用列表行容器
+/* 应用列表行容器 */
 static lv_obj_t *cont_row_app;
 
-// 应用名称标签
+/* 应用名称标签 */
 static lv_obj_t *label_name;
 
-// 页面名称
+/* 页面名称 */
 static char *PAGE_NAME = "apps";
 
-// 应用图标大小
+/* 应用图标大小 */
 static uint32_t app_obj_size = 0;
 
 static uint32_t idx = 0;
@@ -154,7 +154,7 @@ static void event_handler(lv_event_t *e) {
 }
 
 static void cont_row_obj_init(lv_obj_t *cont_row_obj, lv_obj_t *parent) {
-  // 设置行容器的样式、事件处理等
+  /* 设置行容器的样式、事件处理等 */
   lv_group_add_obj(lv_group_get_default(), cont_row_obj);
   // lv_obj_add_event_cb(cont_row_app, event_handler, LV_EVENT_KEY, NULL);
   // lv_obj_add_event_cb(cont_row_obj, event_handler, LV_EVENT_SCROLL_END,
@@ -172,11 +172,11 @@ static void cont_row_obj_init(lv_obj_t *cont_row_obj, lv_obj_t *parent) {
 
 static void apps_icon_init(lv_obj_t *cont_row_obj) {
   uint32_t i;
-  // app icon size
+  /* app icon size */
   app_obj_size =
       (GUI_WIDTH - ((APPS_ROW_NUM + 1) * APPS_APP_SPACING)) / APPS_ROW_NUM;
 
-  // app number
+  /* app number */
   uint32_t len = get_apps_number();
   lv_obj_t *old_obj = NULL;
 
@@ -252,25 +252,25 @@ static void apps_label_init(lv_obj_t *parent) {
 int page_apps_init(lv_obj_t *gui, void *data) {
   page_self_gui = gui;
 
-  // 创建应用列表行容器
+  /* 创建应用列表行容器 */
   cont_row_app = lv_obj_create(page_self_gui);
   cont_row_obj_init(cont_row_app, page_self_gui);
 
-  // 创建应用图标和名称标签
-  // 设置图标和名称标签的样式、事件处理等
+  /* 创建应用图标和名称标签 */
+  /* 设置图标和名称标签的样式、事件处理等 */
   apps_icon_init(cont_row_app);
 
-  // 创建名称标签
-  // 设置名称标签的样式
+  /* 创建名称标签 */
+  /* 设置名称标签的样式 */
   apps_label_init(page_self_gui);
 
   /* set focus */
   lv_group_focus_obj(cont_row_app);
 
-  // 切换到第一个应用
+  /* 切换到第一个应用 */
   switch_app(0);
 
-  // 设置状态栏
+  /* 设置状态栏 */
 #ifdef USE_STATUS_BAR
   /*
    * 设置状态栏的父对象、时间显示等

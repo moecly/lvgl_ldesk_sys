@@ -13,7 +13,7 @@
  */
 pn_list *list_new(void) {
   pn_list *ret;
-  // 调用宏以创建新链表
+  /* 调用宏以创建新链表 */
   LIST_CREATE(ret);
   return ret;
 }
@@ -30,7 +30,7 @@ void list_free(pn_list *list) { LIST_FREE(list); }
  * @param nd: 要插入的节点
  */
 void list_push_node_to_head(pn_list *list, list_node *nd) {
-  // 更新节点的前后关系，增加链表长度
+  /* 更新节点的前后关系，增加链表长度 */
   SET_NODE_NEXT(nd, NODE_NEXT(LIST_HEAD(list)));
   SET_NODE_PREV(nd, LIST_HEAD(list));
   SET_NODE_PREV(NODE_NEXT(LIST_HEAD(list)), nd);
@@ -44,7 +44,7 @@ void list_push_node_to_head(pn_list *list, list_node *nd) {
  * @param nd: 要插入的节点
  */
 void list_push_node_to_tail(pn_list *list, list_node *nd) {
-  // 更新节点的前后关系，增加链表长度
+  /* 更新节点的前后关系，增加链表长度 */
   SET_NODE_NEXT(nd, LIST_TAIL(list));
   SET_NODE_PREV(nd, NODE_PREV(LIST_TAIL(list)));
   SET_NODE_NEXT(NODE_PREV(LIST_TAIL(list)), nd);
@@ -58,7 +58,7 @@ void list_push_node_to_tail(pn_list *list, list_node *nd) {
  * @param val: 要插入的值
  */
 void list_push_to_head(pn_list *list, void *val) {
-  // 创建节点，将值保存在节点中，然后调用 list_push_node_to_head()
+  /* 创建节点，将值保存在节点中，然后调用 list_push_node_to_head() */
   list_node *nd = MALLOC_FUNC(list_node);
   nd->val = (void *)val;
   list_push_node_to_head(list, nd);
@@ -70,7 +70,7 @@ void list_push_to_head(pn_list *list, void *val) {
  * @param val: 要插入的值
  */
 void list_push_to_tail(pn_list *list, void *val) {
-  // 创建节点，将值保存在节点中，然后调用 list_push_node_to_tail()
+  /* 创建节点，将值保存在节点中，然后调用 list_push_node_to_tail() */
   list_node *nd = MALLOC_FUNC(list_node);
   nd->val = (void *)val;
   list_push_node_to_tail(list, nd);
@@ -85,7 +85,7 @@ void list_push_to_tail(pn_list *list, void *val) {
 void *list_get_node_from_index(pn_list *list, uint32_t idx) {
   list_node *nd;
   uint32_t index = 0;
-  // 遍历链表，找到对应索引的节点
+  /* 遍历链表，找到对应索引的节点 */
   each_node_for_linked(nd, LIST_HEAD_NODE(list), next) {
     if (index == idx)
       return nd;
@@ -101,7 +101,7 @@ void *list_get_node_from_index(pn_list *list, uint32_t idx) {
  * @return: 返回指向节点值的指针，如果索引无效返回 NULL
  */
 void *list_get_val_from_index(pn_list *list, uint32_t idx) {
-  // 获取对应索引的节点，然后返回节点中的值
+  /* 获取对应索引的节点，然后返回节点中的值 */
   list_node *nd = list_get_node_from_index(list, idx);
   if (!nd)
     return NULL;

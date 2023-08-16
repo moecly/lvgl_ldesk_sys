@@ -10,10 +10,10 @@
 #include <alloca.h>
 #include <string.h>
 
-// 全局状态栏实例
+/* 全局状态栏实例 */
 static status_bar *bar;
 
-// 全局状态栏元素
+/* 全局状态栏元素 */
 static bar_elem elem;
 
 /*
@@ -23,27 +23,27 @@ static bar_elem elem;
  *      STATUS_BAR_DISABLE不显示
  */
 static void bar_show(int is_show) {
-  // 创建一个 LVGL 动画对象
+  /* 创建一个 LVGL 动画对象 */
   lv_anim_t anim;
 
-  // 如果需要显示状态栏，且当前状态为隐藏状态
+  /* 如果需要显示状态栏，且当前状态为隐藏状态 */
   if (is_show == STATUS_BAR_ENABLE &&
       elem.status_bar.state == STATUS_BAR_DISABLE) {
-    // 添加一个动画：从隐藏状态移动到显示状态
+    /* 添加一个动画：从隐藏状态移动到显示状态 */
     ANIM_LINE_ADD(&anim, anim_y_cb, lv_anim_path_overshoot, NULL,
                   STATUS_BAR_ANIM_DURATION, 0, STATUS_BAR_ANIM_DELAY, bar->bar,
                   STATUS_BAR_START_LOCA, 0, 0);
-    lv_anim_start(&anim); // 启动动画
+    lv_anim_start(&anim); /* 启动动画 */
   }
 
-  // 如果需要隐藏状态栏，且当前状态为显示状态
+  /* 如果需要隐藏状态栏，且当前状态为显示状态 */
   if (is_show == STATUS_BAR_DISABLE &&
       elem.status_bar.state == STATUS_BAR_ENABLE) {
-    // 添加一个动画：从显示状态移动到隐藏状态
+    /* 添加一个动画：从显示状态移动到隐藏状态 */
     ANIM_LINE_ADD(&anim, anim_y_cb, lv_anim_path_overshoot, NULL,
                   STATUS_BAR_ANIM_DURATION, 0, STATUS_BAR_ANIM_DELAY, bar->bar,
                   0, STATUS_BAR_START_LOCA, 0);
-    // 启动动画
+    /* 启动动画 */
     lv_anim_start(&anim);
   }
 }
@@ -53,7 +53,7 @@ static void bar_show(int is_show) {
  * @param state: 状态栏状态
  */
 static void bar_set_state(STATUS_BAR_STATE state) {
-  // 在这里进行状态栏的状态设置操作
+  /* 在这里进行状态栏的状态设置操作 */
   bar_show(state);
   elem.status_bar.state = state;
 }
@@ -106,15 +106,15 @@ static void status_bar_set_title(const char *title) {
  */
 static void set_time(void) {
   lv_obj_t *obj = lv_obj_get_child(bar->bar, elem.time.id);
-  int hour = get_hour();     // 获取小时
-  int minute = get_minute(); // 获取分钟
+  int hour = get_hour();     /* 获取小时 */
+  int minute = get_minute(); /* 获取分钟 */
   char hour_str[32];
   char minute_str[32];
   char symbol_str[32] = {' ', ':', ' '};
   char time_str[32];
   time_str[0] = '\0';
-  int_num_to_str(hour_str, hour);     // 将小时转换为字符串
-  int_num_to_str(minute_str, minute); // 将分钟转换为字符串
+  int_num_to_str(hour_str, hour);     /* 将小时转换为字符串 */
+  int_num_to_str(minute_str, minute); /* 将分钟转换为字符串 */
 
   /*
    * 格式化小时和分钟的显示
@@ -157,7 +157,7 @@ static void status_bar_time_task(lv_timer_t *timer) {
  * @brief: 初始化状态栏
  */
 static void status_bar_init(void) {
-  // 创建状态栏对象
+  /* 创建状态栏对象 */
   bar->bar = lv_obj_create(lv_scr_act());
 
   /*
@@ -174,7 +174,7 @@ static void status_bar_init(void) {
   lv_obj_align(bar->bar, LV_ALIGN_TOP_MID, 0, 0);
   lv_obj_clear_flag(bar->bar, LV_OBJ_FLAG_SCROLLABLE);
 
-  // 创建时间标签
+  /* 创建时间标签 */
   lv_obj_t *label_time = lv_label_create(bar->bar);
   elem.time.id = lv_obj_get_child_id(label_time);
 
@@ -189,7 +189,7 @@ static void status_bar_init(void) {
   lv_obj_align(label_time, LV_ALIGN_LEFT_MID, STATUS_BAR_TIME_X_SPACING,
                STATUS_BAR_TIME_y_SPACING);
 
-  // 创建页面名称标签
+  /* 创建页面名称标签 */
   lv_obj_t *label_title = lv_label_create(bar->bar);
   elem.title.id = lv_obj_get_child_id(label_title);
 

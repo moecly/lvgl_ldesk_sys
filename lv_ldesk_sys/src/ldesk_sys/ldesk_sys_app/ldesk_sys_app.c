@@ -8,7 +8,7 @@
 #include "lv_ldesk_sys/src/utils/list/list.h"
 #include <stdint.h>
 
-// 应用列表
+/* 应用列表 */
 static pn_list *apps_list;
 
 /*
