@@ -11,6 +11,8 @@
 #include "lv_ldesk_sys/src/ldesk_sys/ldesk_sys_page_opr/ldesk_sys_page_opr.h"
 #include "lv_ldesk_sys/src/utils/log_msg/log_msg.h"
 #include "src/core/lv_disp.h"
+#include "src/core/lv_event.h"
+#include "src/core/lv_group.h"
 #include "src/core/lv_obj.h"
 #include "src/misc/lv_anim.h"
 #include "stdio.h"
@@ -30,6 +32,8 @@ static char *PAGE_NAME = "apps";
 
 // 应用图标大小
 static uint32_t app_obj_size = 0;
+
+static uint32_t idx = 0;
 
 /**
  * @brief 添加阴影效果到图标
@@ -63,6 +67,7 @@ static void switch_app(uint32_t id) {
   lv_obj_t *child = lv_obj_get_child(parent, id);
   app_item *app = get_app_from_index(id);
   uint32_t to_x = 0;
+  idx = id;
 
   if (old_id == -1) {
     old_y = lv_obj_get_y(child);
@@ -90,7 +95,7 @@ static void switch_app(uint32_t id) {
   icon_remove_shadow(old_child);
   icon_add_shadow(child);
 
-  dlog("old_y = %d\n, new_y = %d\n", old_y, new_y);
+  dlog("old_y = %d, new_y = %d\n", old_y, new_y);
   lv_anim_t anim0;
   ANIM_LINE_ADD(&anim0, anim_y_cb, lv_anim_path_overshoot, NULL,
                 APPS_APP_ICON_ANIM_DURATION, 0, 0, child, old_y, new_y, 0);
@@ -115,7 +120,10 @@ static void event_scroll_end_handler(lv_event_t *e) {}
  * @brief 按键事件处理函数
  * @param e 事件对象
  */
-static void event_key_handler(lv_event_t *e) {}
+static void event_key_handler(lv_event_t *e) {
+  idx++;
+  switch_app(idx);
+}
 
 /**
  * @brief 点击事件处理函数
@@ -149,7 +157,8 @@ static void cont_row_obj_init(lv_obj_t *cont_row_obj, lv_obj_t *parent) {
   // 设置行容器的样式、事件处理等
   lv_group_add_obj(lv_group_get_default(), cont_row_obj);
   // lv_obj_add_event_cb(cont_row_app, event_handler, LV_EVENT_KEY, NULL);
-  lv_obj_add_event_cb(cont_row_obj, event_handler, LV_EVENT_SCROLL_END, NULL);
+  // lv_obj_add_event_cb(cont_row_obj, event_handler, LV_EVENT_SCROLL_END,
+  // NULL);
   lv_obj_set_size(cont_row_obj, GUI_WIDTH,
                   GUI_HEIGHT - APPS_APP_NAME_HEIGHT - STATUS_BAR_HEIGHT);
   lv_obj_set_style_border_width(cont_row_obj, 0, 0);

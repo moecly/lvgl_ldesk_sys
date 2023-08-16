@@ -6,6 +6,7 @@
 
 #include "ldesk_sys_demo.h"
 #include "src/core/lv_disp.h"
+#include "src/core/lv_event.h"
 #include <stdint.h>
 
 // 预定义的应用项数组
