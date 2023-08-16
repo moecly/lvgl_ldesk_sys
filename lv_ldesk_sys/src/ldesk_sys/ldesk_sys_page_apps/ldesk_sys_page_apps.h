@@ -13,13 +13,18 @@ extern "C" {
 
 #include "../ldesk_sys.h"
 
+enum {
+  SHOW,
+  HIDE,
+};
+
 /**
  * @brief 初始化应用页面
  * @param root 页面的根GUI对象
  * @return 返回初始化结果，0 表示成功，其他值表示失败
  */
-int page_apps_init(lv_obj_t *root);
-int page_apps_exit(lv_obj_t *gui);
+int page_apps_init(lv_obj_t *root, void *data);
+int page_apps_exit(lv_obj_t *gui, void *data);
 
 #ifdef __cplusplus
 } /* extern "C" */

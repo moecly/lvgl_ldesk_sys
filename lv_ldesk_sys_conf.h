@@ -30,32 +30,42 @@
 
 #define GUI_WIDTH 280
 #define GUI_HEIGHT 240
+#define PAGE_SWITCH_TIME 500
 
 #if LDESK_SYS_DEMO
 
 /* apps */
 #define APPS_ROW_NUM 3
+/* apps icon */
 #define APPS_APP_SPACING 10
 #define APPS_APP_SELECT_NEW_Y 15
-#define APPS_APP_NAME_HEIGHT 80
-#define APPS_SHADOW_COLOR LV_PALETTE_BLUE
-#define APPS_APP_NAME_BOTTOM_SPACING 10
 #define APPS_ICON_FONT_SIZE lv_font_montserrat_22
-#define APPS_APP_NAME_FONT_SIZE lv_font_montserrat_22
+#define APPS_APP_SHADOW_COLOR LV_PALETTE_BLUE
 #define APPS_APP_SHADOW_WIDTH 30
+#define APPS_APP_ICON_ANIM_DURATION 250
+/* app label */
+#define APPS_APP_NAME_HEIGHT 80
+#define APPS_APP_NAME_BOTTOM_SPACING 10
+#define APPS_APP_NAME_FONT_SIZE lv_font_montserrat_22
+#define APPS_APP_NAME_START_LOCA 25
+#define APPS_APP_NAME_ANIM_DURATION 500
+#define APPS_APP_NAME_ANIM_DELAY 300
 
 /* status bar */
 #define USE_STATUS_BAR 1
 /* status bar configs */
 #define STATUS_BAR_HEIGHT 30
+#define STATUS_BAR_START_LOCA -32
+#define STATUS_BAR_ANIM_DURATION 500
+#define STATUS_BAR_ANIM_DELAY 500
 /* status bar time configs */
 #define SHOW_STATUS_BAR_TIME 1
-#define STATUS_BAR_TIME_TEXT_SIZE lv_font_montserrat_14
+#define STATUS_BAR_TIME_TEXT_SIZE lv_font_montserrat_22
 #define STATUS_BAR_TIME_X_SPACING 5
 #define STATUS_BAR_TIME_y_SPACING 3
 /* status bar title config */
 #define SHOW_STATUS_BAR_TITLE 1
-#define STATUS_BAR_TITLE_TEXT_SIZE lv_font_montserrat_14
+#define STATUS_BAR_TITLE_TEXT_SIZE lv_font_montserrat_22
 #define STATUS_BAR_TITLE_X_SPACING 0
 #define STATUS_BAR_TITLE_y_SPACING 3
 

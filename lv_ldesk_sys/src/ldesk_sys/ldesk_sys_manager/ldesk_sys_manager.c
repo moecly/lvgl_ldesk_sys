@@ -6,13 +6,13 @@
 
 #include "ldesk_sys_manager.h"
 #include "lv_ldesk_sys/src/utils/log_msg/log_msg.h"
+#include "src/core/lv_disp.h"
 #include "src/core/lv_obj_tree.h"
 #include "stdio.h"
 #include <stdint.h>
 #include <string.h>
 
 static pn_list *page_list;
-static uint32_t old_id = -1;
 
 /*
  * @brief: 初始化桌面系统
@@ -28,7 +28,7 @@ void ldesk_sys_add_page(page_object *page) {
   list_push_to_tail(page_list, page);
 }
 
-int ldesk_sys_create_page(page_object *page) {
+int ldesk_sys_create_page(page_object *page, void *data) {
   // 调用页面初始化句柄函数
   if (validate_pointer(page)) {
     ELOG_CURR();
@@ -42,7 +42,7 @@ int ldesk_sys_create_page(page_object *page) {
   lv_obj_clear_flag(page->gui, LV_OBJ_FLAG_SCROLLABLE);
   lv_obj_center(page->gui);
 
-  return page->ops.init_handle(get_page_gui(page));
+  return page->ops.init_handle(get_page_gui(page), NULL);
 }
 
 /*
@@ -50,12 +50,13 @@ int ldesk_sys_create_page(page_object *page) {
  * @param id: 页面的ID
  * @return: 返回页面创建状态，成功返回0，失败返回-1
  */
-int ldesk_sys_create_page_from_id(uint32_t id) {
+int ldesk_sys_create_page_from_id(uint32_t id, void *data) {
   page_object *page = ldesk_sys_get_page_from_id(id);
-  return ldesk_sys_create_page(page);
+  dlog("create page id = %d\n", id);
+  return ldesk_sys_create_page(page, data);
 }
 
-int ldesk_sys_del_page(page_object *page) {
+int ldesk_sys_del_page(page_object *page, void *data) {
   int ret;
 
   // 调用页面初始化句柄函数
@@ -64,19 +65,19 @@ int ldesk_sys_del_page(page_object *page) {
     return -1;
   }
 
-  ret = page->ops.exit_handle(get_page_gui(page));
+  ret = page->ops.exit_handle(get_page_gui(page), data);
   if (ret) {
     ELOG_CURR();
     return -1;
   }
 
-  lv_obj_del(get_page_gui(page));
   return 0;
 }
 
-int ldesk_sys_del_page_from_id(uint32_t id) {
+int ldesk_sys_del_page_from_id(uint32_t id, void *data) {
   page_object *page = ldesk_sys_get_page_from_id(id);
-  return ldesk_sys_create_page(page);
+  dlog("del page id = %d\n", id);
+  return ldesk_sys_del_page(page, data);
 }
 
 /*
@@ -121,40 +122,49 @@ page_object *ldesk_sys_get_page_from_id(uint32_t id) {
  * @brief: 加载页面到屏幕
  * @param page: 页面对象指针
  */
-void ldesk_sys_load_page(page_object *page) { lv_scr_load(page->gui); }
+void ldesk_sys_load_page(page_object *page, lv_scr_load_anim_t load_anim) {
+  lv_scr_load_anim(page->gui, load_anim, PAGE_SWITCH_TIME, 0, 1);
+}
 
 /*
  * @brief: 根据ID加载页面到屏幕
  * @param id: 页面的ID
  * @return: 返回页面加载状态，成功返回0，失败返回-1
  */
-int ldesk_sys_load_page_from_id(uint32_t id) {
+int ldesk_sys_load_page_from_id(uint32_t id, lv_scr_load_anim_t load_anim) {
   page_object *page = ldesk_sys_get_page_from_id(id);
   if (validate_pointer(page)) {
     ELOG_CURR();
     return -1;
   }
-  ldesk_sys_load_page(page);
+  ldesk_sys_load_page(page, load_anim);
   return 0;
 }
 
-int ldesk_sys_disp_page_from_id(uint32_t id) {
+int ldesk_sys_disp_page_from_id(uint32_t id, void *create_params,
+                                void *del_params,
+                                lv_scr_load_anim_t load_anim) {
   int ret;
+  static uint32_t old_id = -1;
 
   if (old_id == id)
     return 0;
 
-  if (old_id != -1) {
-    ldesk_sys_del_page_from_id(old_id);
-  }
-
-  old_id = id;
-
-  ret = ldesk_sys_create_page_from_id(id);
+  ret = ldesk_sys_create_page_from_id(id, (void *)&create_params);
   if (ret) {
     ELOG_CURR();
     return -1;
   }
 
-  return ldesk_sys_load_page_from_id(id);
+  ret = ldesk_sys_load_page_from_id(id, load_anim);
+  if (ret) {
+    ELOG_CURR();
+    return -1;
+  }
+
+  if (old_id != -1)
+    ldesk_sys_del_page_from_id(old_id, (void *)&del_params);
+
+  old_id = id;
+  return 0;
 }

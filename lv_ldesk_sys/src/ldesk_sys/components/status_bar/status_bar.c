@@ -6,6 +6,8 @@
 
 #include "status_bar.h"
 #include "lv_ldesk_sys/src/utils/log_msg/log_msg.h"
+#include "src/core/lv_disp.h"
+#include <alloca.h>
 #include <string.h>
 
 // 全局状态栏实例
@@ -14,12 +16,32 @@ static status_bar *bar;
 // 全局状态栏元素
 static bar_elem elem;
 
+static void bar_show(int is_show) {
+  lv_anim_t anim;
+  if (is_show == STATUS_BAR_ENABLE &&
+      elem.status_bar.state == STATUS_BAR_DISABLE) {
+    ANIM_LINE_ADD(&anim, anim_y_cb, lv_anim_path_overshoot, NULL,
+                  STATUS_BAR_ANIM_DURATION, 0, STATUS_BAR_ANIM_DELAY, bar->bar,
+                  STATUS_BAR_START_LOCA, 0, 0);
+    lv_anim_start(&anim);
+  }
+  if (is_show == STATUS_BAR_DISABLE &&
+      elem.status_bar.state == STATUS_BAR_ENABLE) {
+    ANIM_LINE_ADD(&anim, anim_y_cb, lv_anim_path_overshoot, NULL,
+                  STATUS_BAR_ANIM_DURATION, 0, STATUS_BAR_ANIM_DELAY, bar->bar,
+                  0, STATUS_BAR_START_LOCA, 0);
+    lv_anim_start(&anim);
+  }
+}
+
 /*
  * @brief: 设置状态栏的状态
  * @param state: 状态栏状态
  */
 static void bar_set_state(STATUS_BAR_STATE state) {
   // 在这里进行状态栏的状态设置操作
+  bar_show(state);
+  elem.status_bar.state = state;
 }
 
 /*
@@ -27,6 +49,10 @@ static void bar_set_state(STATUS_BAR_STATE state) {
  * @param state: 时间状态
  */
 static void time_set_state(STATUS_BAR_STATE state) { elem.time.state = state; }
+
+static void title_set_state(STATUS_BAR_STATE state) {
+  elem.title.state = state;
+}
 
 /*
  * @brief: 设置状态栏或时间的状态
@@ -39,6 +65,9 @@ static void status_bar_set_state(STATUS_BAR_TYPE type, STATUS_BAR_STATE state) {
 
   if (type == TIME)
     time_set_state(state);
+
+  if (type == TITLE)
+    title_set_state(state);
 }
 
 /*
@@ -116,6 +145,7 @@ static void status_bar_init(void) {
   bar->bar = lv_obj_create(lv_scr_act());
 
   // 进行状态栏的样式设置
+  elem.status_bar.state = STATUS_BAR_ENABLE;
   lv_obj_set_size(bar->bar, GUI_WIDTH, STATUS_BAR_HEIGHT);
   lv_obj_set_style_border_width(bar->bar, 0, 0);
   lv_obj_set_style_pad_all(bar->bar, 0, 0);
@@ -131,6 +161,7 @@ static void status_bar_init(void) {
   elem.time.id = lv_obj_get_child_id(label_time);
 
   // 设置时间标签的样式
+  elem.time.state = STATUS_BAR_ENABLE;
   lv_label_set_text(label_time, "07 : 00");
   lv_obj_set_size(label_time, LV_SIZE_CONTENT, STATUS_BAR_HEIGHT);
   lv_obj_set_style_text_font(label_time, &STATUS_BAR_TIME_TEXT_SIZE, 0);
@@ -143,6 +174,7 @@ static void status_bar_init(void) {
   elem.title.id = lv_obj_get_child_id(label_title);
 
   // 设置页面名称标签的样式
+  elem.title.state = STATUS_BAR_ENABLE;
   lv_label_set_text(label_title, "");
   lv_obj_set_size(label_title, LV_SIZE_CONTENT, STATUS_BAR_HEIGHT);
   lv_obj_set_style_text_font(label_title, &STATUS_BAR_TITLE_TEXT_SIZE, 0);
@@ -169,6 +201,9 @@ status_bar *status_bar_instance(void) {
   bar->set_parent = status_bar_set_parent;
   bar->set_title = status_bar_set_title;
   status_bar_init();
+  status_bar_set_state(STATUS_BAR, STATUS_BAR_DISABLE);
+  status_bar_set_state(TIME, STATUS_BAR_DISABLE);
+  status_bar_set_state(TITLE, STATUS_BAR_DISABLE);
 
   return bar;
 }

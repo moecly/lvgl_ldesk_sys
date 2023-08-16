@@ -10,6 +10,9 @@
 #include "src/core/lv_disp.h"
 #include "src/core/lv_obj.h"
 #include "src/core/lv_obj_pos.h"
+#include "src/core/lv_obj_tree.h"
+#include "src/misc/lv_anim.h"
+#include "src/widgets/lv_label.h"
 #ifndef _DEFAULT_SOURCE
 #define _DEFAULT_SOURCE /* needed for usleep() */
 #endif
@@ -24,7 +27,6 @@
 #include "lv_ldesk_sys/lv_ldesk_sys.h"
 #include "lvgl/examples/lv_examples.h"
 #include "lvgl/lvgl.h"
-// #include "src/lv_demo_music/lv_demo_music.h"
 #include <SDL2/SDL.h>
 
 /*********************
@@ -84,6 +86,33 @@ int main(int argc, char **argv) {
   hal_init();
 
   ldesk_sys_demo_init();
+/*   lv_obj_t *obj0 = lv_obj_create(NULL);
+  lv_obj_t *label0 = lv_label_create(obj0);
+  lv_label_set_text(label0, "hello");
+  lv_obj_center(label0);
+
+  lv_obj_t *obj1 = lv_obj_create(NULL);
+  lv_obj_t *label1 = lv_label_create(obj1);
+  lv_label_set_text(label1, "world");
+  lv_obj_center(label1);
+
+  lv_obj_t *obj2 = lv_obj_create(lv_scr_act());
+  lv_obj_t *label2 = lv_label_create(obj2);
+  lv_label_set_text(label2, "test");
+  lv_obj_set_parent(obj2, obj0);
+
+  lv_scr_load(obj0);
+  lv_scr_load(obj1);
+  // lv_anim_del_all();
+  lv_obj_set_parent(obj2, obj1);
+  lv_obj_del(obj0);
+
+  // 动画
+  lv_anim_t anim;
+  ANIM_LINE_ADD(&anim, anim_y_cb, lv_anim_path_overshoot, NULL,
+                APPS_APP_NAME_ANIM_DURATION, 0, 0, label2,
+                APPS_APP_NAME_START_LOCA, -APPS_APP_NAME_BOTTOM_SPACING, 0);
+  lv_anim_start(&anim); */
 
   while (1) {
     /* Periodically call the lv_task handler.

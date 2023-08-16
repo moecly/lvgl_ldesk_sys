@@ -15,3 +15,10 @@ page_object page_apps = {
     .ops.init_handle = PAGE_INIT_DEF(apps),
     .ops.exit_handle = PAGE_EXIT_DEF(apps),
 };
+
+page_object page_setting = {
+    .id = PAGE_SETTING,
+    .name = "setting",
+    .ops.init_handle = PAGE_INIT_DEF(setting),
+    .ops.exit_handle = PAGE_EXIT_DEF(setting),
+};

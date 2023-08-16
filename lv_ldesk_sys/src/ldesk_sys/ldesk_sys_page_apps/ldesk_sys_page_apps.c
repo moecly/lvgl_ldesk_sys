@@ -5,8 +5,14 @@
  */
 
 #include "ldesk_sys_page_apps.h"
+#include "lv_ldesk_sys/src/ldesk_sys/components/status_bar/status_bar.h"
 #include "lv_ldesk_sys/src/ldesk_sys/ldesk_sys_app/ldesk_sys_app.h"
+#include "lv_ldesk_sys/src/ldesk_sys/ldesk_sys_manager/ldesk_sys_manager.h"
+#include "lv_ldesk_sys/src/ldesk_sys/ldesk_sys_page_opr/ldesk_sys_page_opr.h"
+#include "lv_ldesk_sys/src/utils/log_msg/log_msg.h"
+#include "src/core/lv_disp.h"
 #include "src/core/lv_obj.h"
+#include "src/misc/lv_anim.h"
 #include "stdio.h"
 #include <stdint.h>
 
@@ -31,7 +37,7 @@ static uint32_t app_obj_size = 0;
  */
 static void icon_add_shadow(lv_obj_t *obj) {
   lv_obj_set_style_shadow_width(obj, APPS_APP_SHADOW_WIDTH, LV_PART_MAIN);
-  lv_obj_set_style_shadow_color(obj, lv_palette_main(LV_PALETTE_BLUE),
+  lv_obj_set_style_shadow_color(obj, lv_palette_main(APPS_APP_SHADOW_COLOR),
                                 LV_PART_MAIN);
 }
 
@@ -75,20 +81,24 @@ static void switch_app(uint32_t id) {
   lv_label_set_text(label_name, app->name);
 
   // 打开应用
-  if (old_id == id)
+  if (old_id == id) {
+    ldesk_sys_disp_page_from_id(PAGE_SETTING, NULL, NULL,
+                                LV_SCR_LOAD_ANIM_MOVE_BOTTOM);
     return;
+  }
 
   icon_remove_shadow(old_child);
   icon_add_shadow(child);
 
   dlog("old_y = %d\n, new_y = %d\n", old_y, new_y);
   lv_anim_t anim0;
-  ANIM_LINE_ADD(&anim0, anim_y_cb, lv_anim_path_overshoot, NULL, 250, 0, 50,
-                child, old_y, new_y, 0);
+  ANIM_LINE_ADD(&anim0, anim_y_cb, lv_anim_path_overshoot, NULL,
+                APPS_APP_ICON_ANIM_DURATION, 0, 0, child, old_y, new_y, 0);
   lv_anim_start(&anim0);
 
   lv_anim_t anim1;
-  ANIM_LINE_ADD(&anim1, anim_y_cb, lv_anim_path_overshoot, NULL, 250, 0, 0,
+  ANIM_LINE_ADD(&anim1, anim_y_cb, lv_anim_path_overshoot, NULL,
+                APPS_APP_ICON_ANIM_DURATION, 0, 0,
                 lv_obj_get_child(parent, old_id), new_y, old_y, 0);
   lv_anim_start(&anim1);
 
@@ -191,6 +201,25 @@ static void apps_icon_init(lv_obj_t *cont_row_obj) {
   }
 }
 
+static void set_apps_label(int is_show, lv_anim_ready_cb_t anim_ready_cb) {
+  // 动画
+  lv_anim_t anim;
+  if (is_show == SHOW) {
+    ANIM_LINE_ADD(&anim, anim_y_cb, lv_anim_path_overshoot, anim_ready_cb,
+                  APPS_APP_NAME_ANIM_DURATION, 0, APPS_APP_NAME_ANIM_DELAY,
+                  label_name, APPS_APP_NAME_START_LOCA,
+                  -APPS_APP_NAME_BOTTOM_SPACING, 0);
+    lv_anim_start(&anim);
+  }
+  if (is_show == HIDE) {
+    ANIM_LINE_ADD(&anim, anim_y_cb, lv_anim_path_overshoot, anim_ready_cb,
+                  APPS_APP_NAME_ANIM_DURATION, 0, APPS_APP_NAME_ANIM_DELAY,
+                  label_name, -APPS_APP_NAME_BOTTOM_SPACING,
+                  APPS_APP_NAME_START_LOCA, 0);
+    lv_anim_start(&anim);
+  }
+}
+
 static void apps_label_init(lv_obj_t *parent) {
   app_item *app = get_app_from_index(0);
   label_name = lv_label_create(parent);
@@ -201,6 +230,9 @@ static void apps_label_init(lv_obj_t *parent) {
                              LV_PART_MAIN);
   lv_obj_align(label_name, LV_ALIGN_BOTTOM_MID, 0,
                -APPS_APP_NAME_BOTTOM_SPACING);
+
+  // 动画
+  set_apps_label(SHOW, NULL);
 }
 
 /**
@@ -208,7 +240,7 @@ static void apps_label_init(lv_obj_t *parent) {
  * @param gui 页面的GUI对象
  * @return 返回初始化结果，0 表示成功，其他值表示失败
  */
-int page_apps_init(page_gui *gui) {
+int page_apps_init(lv_obj_t *gui, void *data) {
   page_self_gui = gui;
 
   // 创建应用列表行容器
@@ -231,10 +263,10 @@ int page_apps_init(page_gui *gui) {
 
   // 设置状态栏
 #ifdef USE_STATUS_BAR
-  // 设置状态栏为启用
   // 设置状态栏的父对象、时间显示等
-  set_status_bar(STATUS_BAR_ENABLE);
+  // 设置状态栏为启用
   set_status_bar_parent(page_self_gui);
+  set_status_bar(STATUS_BAR_ENABLE);
 
 #ifdef SHOW_STATUS_BAR_TIME
   set_status_bar_time(STATUS_BAR_ENABLE);
@@ -246,8 +278,7 @@ int page_apps_init(page_gui *gui) {
 #endif // !SHOW_STATUS_BAR_TITLE
 
 #endif // SHOW_STATUS_BAR_TIME
-
   return 0;
 }
 
-int page_apps_exit(lv_obj_t *gui) { return 0; }
+int page_apps_exit(lv_obj_t *gui, void *data) { return 0; }

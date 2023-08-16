@@ -11,7 +11,7 @@
 extern "C" {
 #endif
 
-#include "../../lv_ldesk_sys.h"
+#include "../ldesk_sys_demo.h"
 
 // 定义页面初始化函数宏
 #define PAGE_INIT_DEF(TAG) page_##TAG##_init
@@ -23,10 +23,12 @@ extern "C" {
 typedef enum {
   PAGE_NULL = -1,
   PAGE_APPS,
+  PAGE_SETTING,
 } PAGE_ID;
 
 // 声明页面对象
 extern struct page_object page_apps;
+extern struct page_object page_setting;
 
 #ifdef __cplusplus
 } /* extern "C" */

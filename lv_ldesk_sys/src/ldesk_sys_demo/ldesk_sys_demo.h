@@ -12,7 +12,8 @@ extern "C" {
 #endif
 
 #include "../../lv_ldesk_sys.h"
-#include "ldesk_sys_page_conf.h"
+#include "ldesk_sys_page_conf/ldesk_sys_page_conf.h"
+#include "page_setting/page_setting.h"
 
 /**
  * @brief LDesk系统演示的初始化函数声明

@@ -5,6 +5,7 @@
  */
 
 #include "ldesk_sys_demo.h"
+#include "src/core/lv_disp.h"
 #include <stdint.h>
 
 // 预定义的应用项数组
@@ -36,6 +37,8 @@ static void apps_init(void) {
 void ldesk_sys_demo_init(void) {
   ldesk_sys_init();
   ldesk_sys_add_page(&page_apps);
+  ldesk_sys_add_page(&page_setting);
   apps_init();
-  ldesk_sys_disp_page_from_id(PAGE_APPS);
+  ldesk_sys_disp_page_from_id(PAGE_APPS, NULL, NULL,
+                              LV_SCR_LOAD_ANIM_MOVE_RIGHT);
 }
