@@ -19,6 +19,7 @@ extern "C" {
  * @return 返回初始化结果，0 表示成功，其他值表示失败
  */
 int page_apps_init(lv_obj_t *root);
+int page_apps_exit(lv_obj_t *gui);
 
 #ifdef __cplusplus
 } /* extern "C" */

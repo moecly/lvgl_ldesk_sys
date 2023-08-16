@@ -16,6 +16,9 @@ extern "C" {
 // 定义页面初始化函数宏
 #define PAGE_INIT_DEF(TAG) page_##TAG##_init
 
+// 定义页面退出函数宏
+#define PAGE_EXIT_DEF(TAG) page_##TAG##_exit
+
 // 页面ID枚举
 typedef enum {
   PAGE_NULL = -1,

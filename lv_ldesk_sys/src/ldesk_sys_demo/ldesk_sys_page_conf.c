@@ -13,4 +13,5 @@ page_object page_apps = {
     .id = PAGE_APPS,
     .name = "apps",
     .ops.init_handle = PAGE_INIT_DEF(apps),
+    .ops.exit_handle = PAGE_EXIT_DEF(apps),
 };

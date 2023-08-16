@@ -249,3 +249,5 @@ int page_apps_init(page_gui *gui) {
 
   return 0;
 }
+
+int page_apps_exit(lv_obj_t *gui) { return 0; }

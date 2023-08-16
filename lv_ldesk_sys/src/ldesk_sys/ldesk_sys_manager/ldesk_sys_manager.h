@@ -20,6 +20,7 @@ extern "C" {
 // 页面操作句柄结构体
 typedef struct {
   int (*init_handle)(page_gui *gui); // 初始化句柄函数指针
+  int (*exit_handle)(page_gui *gui); // 初始化句柄函数指针
 } page_ops;
 
 // 页面对象结构体
@@ -46,7 +47,7 @@ void ldesk_sys_init(void);
  * @param id: 页面ID
  * @return: 成功返回0，失败返回-1
  */
-int ldesk_sys_create_page(uint32_t id);
+int ldesk_sys_create_page_from_id(uint32_t id);
 
 /*
  * @brief: 根据ID获取页面对象
@@ -81,6 +82,14 @@ void ldesk_sys_load_page(page_object *page);
  * @return: 成功返回0，失败返回-1
  */
 int ldesk_sys_load_page_from_id(uint32_t id);
+
+int ldesk_sys_disp_page_from_id(uint32_t id);
+
+int ldesk_sys_create_page(page_object *page);
+
+int ldesk_sys_del_page_from_id(uint32_t id);
+
+int ldesk_sys_del_page(page_object *page);
 
 #ifdef __cplusplus
 } /* extern "C" */
