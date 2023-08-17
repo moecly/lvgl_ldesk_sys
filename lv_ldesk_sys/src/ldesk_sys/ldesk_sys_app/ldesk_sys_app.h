@@ -13,8 +13,9 @@
  * 应用项结构体
  */
 typedef struct {
-  char *name; /* 应用名称 */
-  char *icon; /* 应用图标 */
+  char *name;       /* 应用名称 */
+  char *icon;       /* 应用图标 */
+  lv_font_t *font;  /* 字体 */
   uint32_t page_id; /* 页面id */
 } app_item;
 

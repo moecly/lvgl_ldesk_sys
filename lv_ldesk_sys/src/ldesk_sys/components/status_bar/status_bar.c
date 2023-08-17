@@ -7,6 +7,9 @@
 #include "status_bar.h"
 #include "lv_ldesk_sys/src/utils/log_msg/log_msg.h"
 #include "src/core/lv_disp.h"
+#include "src/core/lv_obj.h"
+#include "src/core/lv_obj_tree.h"
+#include "src/misc/lv_color.h"
 #include <alloca.h>
 #include <string.h>
 
@@ -154,6 +157,32 @@ static void status_bar_time_task(lv_timer_t *timer) {
 }
 
 /*
+ * @brief 设置状态栏文本颜色
+ * @param value: 颜色值
+ */
+static void status_bar_set_text_color(lv_color_t value) {
+  lv_obj_t *obj;
+  lv_obj_t *parent = bar->bar;
+
+  /* set time font color */
+  obj = lv_obj_get_child(parent, elem.time.id);
+  lv_obj_set_style_text_color(obj, value, LV_PART_MAIN);
+
+  /* set title font color */
+  obj = lv_obj_get_child(parent, elem.title.id);
+  lv_obj_set_style_text_color(obj, value, LV_PART_MAIN);
+}
+
+/*
+ * @brief 设置状态栏背景颜色
+ * @param value: 颜色值
+ */
+static void status_bar_set_bg_color(lv_color_t value) {
+  lv_obj_t *obj = bar->bar;
+  lv_obj_set_style_bg_color(obj, value, LV_PART_MAIN);
+}
+
+/*
  * @brief: 初始化状态栏
  */
 static void status_bar_init(void) {
@@ -204,6 +233,10 @@ static void status_bar_init(void) {
   lv_obj_align(label_title, LV_ALIGN_CENTER, STATUS_BAR_TITLE_X_SPACING,
                STATUS_BAR_TITLE_y_SPACING);
 
+  /* 设置字体颜色和背景颜色 */
+  status_bar_set_text_color(STATUS_BAR_TEXT_COLOR);
+  status_bar_set_bg_color(STATUS_BAR_BG_COLOR);
+
   /*
    * 创建定时器
    */
@@ -226,6 +259,8 @@ status_bar *status_bar_instance(void) {
   bar->set_state = status_bar_set_state;
   bar->set_parent = status_bar_set_parent;
   bar->set_title = status_bar_set_title;
+  bar->set_bg_color = status_bar_set_bg_color;
+  bar->set_text_color = status_bar_set_text_color;
   status_bar_init();
   status_bar_set_state(STATUS_BAR, STATUS_BAR_DISABLE);
   status_bar_set_state(TIME, STATUS_BAR_DISABLE);

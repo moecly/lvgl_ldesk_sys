@@ -22,3 +22,10 @@ page_object page_setting = {
     .ops.init_handle = PAGE_INIT_DEF(setting),
     .ops.exit_handle = PAGE_EXIT_DEF(setting),
 };
+
+page_object page_wifi = {
+    .id = PAGE_WIFI,
+    .name = "wifi",
+    .ops.init_handle = PAGE_INIT_DEF(wifi),
+    .ops.exit_handle = PAGE_EXIT_DEF(wifi),
+};

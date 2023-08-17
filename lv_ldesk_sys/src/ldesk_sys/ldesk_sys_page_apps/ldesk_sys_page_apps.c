@@ -14,7 +14,9 @@
 #include "src/core/lv_event.h"
 #include "src/core/lv_group.h"
 #include "src/core/lv_obj.h"
+#include "src/font/lv_symbol_def.h"
 #include "src/misc/lv_anim.h"
+#include "src/misc/lv_color.h"
 #include "stdio.h"
 #include <stdint.h>
 
@@ -41,8 +43,7 @@ static uint32_t idx = 0;
  */
 static void icon_add_shadow(lv_obj_t *obj) {
   lv_obj_set_style_shadow_width(obj, APPS_APP_SHADOW_WIDTH, LV_PART_MAIN);
-  lv_obj_set_style_shadow_color(obj, lv_palette_main(APPS_APP_SHADOW_COLOR),
-                                LV_PART_MAIN);
+  lv_obj_set_style_shadow_color(obj, APPS_APP_SHADOW_COLOR, LV_PART_MAIN);
 }
 
 /**
@@ -159,6 +160,7 @@ static void cont_row_obj_init(lv_obj_t *cont_row_obj, lv_obj_t *parent) {
   // lv_obj_add_event_cb(cont_row_app, event_handler, LV_EVENT_KEY, NULL);
   // lv_obj_add_event_cb(cont_row_obj, event_handler, LV_EVENT_SCROLL_END,
   // NULL);
+  lv_obj_set_style_bg_color(cont_row_obj, APPS_BACKGROUND_COLOR, LV_PART_MAIN);
   lv_obj_set_size(cont_row_obj, GUI_WIDTH,
                   GUI_HEIGHT - APPS_APP_NAME_HEIGHT - STATUS_BAR_HEIGHT);
   lv_obj_set_style_border_width(cont_row_obj, 0, 0);
@@ -195,6 +197,7 @@ static void apps_icon_init(lv_obj_t *cont_row_obj) {
     lv_obj_set_size(obj, app_obj_size, app_obj_size);
     lv_obj_set_style_radius(obj, LV_PCT(50), LV_PART_MAIN);
     lv_obj_clear_flag(obj, LV_OBJ_FLAG_SCROLLABLE);
+    lv_obj_set_style_bg_color(obj, APPS_ICON_BG_COLOR, LV_PART_MAIN);
 
     if (old_obj)
       lv_obj_align_to(obj, old_obj, LV_ALIGN_OUT_RIGHT_TOP, APPS_APP_SPACING,
@@ -203,9 +206,8 @@ static void apps_icon_init(lv_obj_t *cont_row_obj) {
       lv_obj_align(obj, LV_ALIGN_LEFT_MID, 0, 0);
 
     label = lv_label_create(obj);
-    lv_obj_set_style_text_color(label, lv_palette_main(LV_PALETTE_DEEP_PURPLE),
-                                LV_PART_MAIN);
-    lv_obj_set_style_text_font(label, &APPS_ICON_FONT_SIZE, LV_PART_MAIN);
+    lv_obj_set_style_text_color(label, APPS_ICON_FONT_COLOR, LV_PART_MAIN);
+    lv_obj_set_style_text_font(label, app->font, LV_PART_MAIN);
     lv_label_set_text(label, app->icon);
     lv_obj_center(label);
     old_obj = obj;
@@ -234,7 +236,7 @@ static void apps_label_init(lv_obj_t *parent) {
   app_item *app = get_app_from_index(0);
   label_name = lv_label_create(parent);
   lv_label_set_text(label_name, app->name);
-  lv_obj_set_style_text_color(label_name, lv_palette_main(LV_PALETTE_BLUE),
+  lv_obj_set_style_text_color(label_name, APPS_APP_NAME_FONT_COLOR,
                               LV_PART_MAIN);
   lv_obj_set_style_text_font(label_name, &APPS_APP_NAME_FONT_SIZE,
                              LV_PART_MAIN);
@@ -251,6 +253,7 @@ static void apps_label_init(lv_obj_t *parent) {
  */
 int page_apps_init(lv_obj_t *gui, void *data) {
   page_self_gui = gui;
+  lv_obj_set_style_bg_color(page_self_gui, APPS_BACKGROUND_COLOR, LV_PART_MAIN);
 
   /* 创建应用列表行容器 */
   cont_row_app = lv_obj_create(page_self_gui);
@@ -278,6 +281,12 @@ int page_apps_init(lv_obj_t *gui, void *data) {
    */
   set_status_bar_parent(page_self_gui);
   set_status_bar(STATUS_BAR_ENABLE);
+
+  /*
+   * 设置状态栏的背景颜色和字体颜色
+   */
+  bar_set_text_color(APPS_APP_NAME_FONT_COLOR);
+  bar_set_bg_color(APPS_BACKGROUND_COLOR);
 
 #ifdef SHOW_STATUS_BAR_TIME
   set_status_bar_time(STATUS_BAR_ENABLE);

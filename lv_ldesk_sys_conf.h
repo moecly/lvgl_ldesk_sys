@@ -36,17 +36,20 @@
 
 /* apps */
 #define APPS_ROW_NUM 3
+#define APPS_BACKGROUND_COLOR lv_color_white()
 /* apps icon */
 #define APPS_APP_SPACING 10
 #define APPS_APP_SELECT_NEW_Y 15
-#define APPS_ICON_FONT_SIZE lv_font_montserrat_22
-#define APPS_APP_SHADOW_COLOR LV_PALETTE_BLUE
+#define APPS_ICON_BG_COLOR lv_color_black()
+#define APPS_ICON_FONT_COLOR lv_palette_main(LV_PALETTE_DEEP_PURPLE)
+#define APPS_APP_SHADOW_COLOR lv_palette_main(LV_PALETTE_BLUE)
 #define APPS_APP_SHADOW_WIDTH 30
 #define APPS_APP_ICON_ANIM_DURATION 250
 /* app label */
 #define APPS_APP_NAME_HEIGHT 80
 #define APPS_APP_NAME_BOTTOM_SPACING 10
 #define APPS_APP_NAME_FONT_SIZE lv_font_montserrat_22
+#define APPS_APP_NAME_FONT_COLOR lv_palette_main(LV_PALETTE_BLUE)
 #define APPS_APP_NAME_START_LOCA 25
 #define APPS_APP_NAME_ANIM_DURATION 500
 #define APPS_APP_NAME_ANIM_DELAY 300
@@ -58,6 +61,8 @@
 #define STATUS_BAR_START_LOCA -32
 #define STATUS_BAR_ANIM_DURATION 500
 #define STATUS_BAR_ANIM_DELAY 500
+#define STATUS_BAR_TEXT_COLOR lv_color_black()
+#define STATUS_BAR_BG_COLOR lv_color_white()
 /* status bar time configs */
 #define SHOW_STATUS_BAR_TIME 1
 #define STATUS_BAR_TIME_TEXT_SIZE lv_font_montserrat_22

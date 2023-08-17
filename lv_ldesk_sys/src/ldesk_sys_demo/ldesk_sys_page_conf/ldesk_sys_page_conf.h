@@ -24,11 +24,13 @@ typedef enum {
   PAGE_NULL = -1,
   PAGE_APPS,
   PAGE_SETTING,
+  PAGE_WIFI,
 } PAGE_ID;
 
 // 声明页面对象
 extern struct page_object page_apps;
 extern struct page_object page_setting;
+extern struct page_object page_wifi;
 
 #ifdef __cplusplus
 } /* extern "C" */

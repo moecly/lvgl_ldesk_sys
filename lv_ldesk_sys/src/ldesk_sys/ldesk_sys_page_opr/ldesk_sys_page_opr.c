@@ -6,6 +6,7 @@
 
 #include "ldesk_sys_page_opr.h"
 #include "lv_ldesk_sys/src/ldesk_sys/components/status_bar/status_bar.h"
+#include "src/misc/lv_color.h"
 
 /**
  * @brief 设置状态栏的状态
@@ -165,10 +166,25 @@ int ldesk_sys_create_page(page_object *page, void *data) {
    * 设置gui属性
    */
   lv_obj_set_size(page->gui, GUI_WIDTH, GUI_HEIGHT);
-  lv_obj_set_style_bg_color(page->gui, lv_color_white(), LV_PART_MAIN);
   lv_obj_clear_flag(page->gui, LV_OBJ_FLAG_SCROLLABLE);
   lv_obj_center(page->gui);
 
   /* 调用页面的初始化句柄函数来进行页面特定的初始化 */
   return page->ops.init_handle(get_page_gui(page), NULL);
+}
+
+/*
+ * @brief 设置状态栏背景颜色
+ * @param value: 颜色值
+ */
+void bar_set_bg_color(lv_color_t value) {
+  status_bar_instance()->set_bg_color(value);
+}
+
+/*
+ * @brief 设置状态栏字体颜色
+ * @param value: 颜色值
+ */
+void bar_set_text_color(lv_color_t value) {
+  status_bar_instance()->set_text_color(value);
 }

@@ -76,4 +76,16 @@ int ldesk_sys_exit_page_from_id(uint32_t id, void *data);
 
 int ldesk_sys_exit_page(struct page_object *page, void *data);
 
+/*
+ * @brief 设置状态栏背景颜色
+ * @param value: 颜色值
+ */
+void bar_set_bg_color(lv_color_t value);
+
+/*
+ * @brief 设置状态栏字体颜色
+ * @param value: 颜色值
+ */
+void bar_set_text_color(lv_color_t value);
+
 #endif // !__LDESK_SYS_PAGE_OPR_H_

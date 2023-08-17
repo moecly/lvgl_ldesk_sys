@@ -12,8 +12,13 @@ extern "C" {
 #endif
 
 #include "../../lv_ldesk_sys.h"
+#include "fonts/font_symbol_def.h"
 #include "ldesk_sys_page_conf/ldesk_sys_page_conf.h"
 #include "page_setting/page_setting.h"
+#include "page_wifi/page_wifi.h"
+
+LV_FONT_DECLARE(font_symbol_14);
+LV_FONT_DECLARE(font_symbol_32)
 
 /**
  * @brief LDesk系统演示的初始化函数声明
