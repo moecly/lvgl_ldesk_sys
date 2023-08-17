@@ -9,15 +9,8 @@
 #include "lv_ldesk_sys/src/ldesk_sys/ldesk_sys_app/ldesk_sys_app.h"
 #include "lv_ldesk_sys/src/ldesk_sys/ldesk_sys_manager/ldesk_sys_manager.h"
 #include "lv_ldesk_sys/src/ldesk_sys/ldesk_sys_page_opr/ldesk_sys_page_opr.h"
-#include "lv_ldesk_sys/src/utils/log_msg/log_msg.h"
-#include "lv_ldesk_sys/src/utils/lvgl_anim/lvgl_anim.h"
-#include "src/core/lv_disp.h"
-#include "src/core/lv_event.h"
-#include "src/core/lv_group.h"
-#include "src/core/lv_obj.h"
-#include "src/font/lv_symbol_def.h"
-#include "src/misc/lv_anim.h"
-#include "src/misc/lv_color.h"
+#include "lv_ldesk_sys/src/ldesk_sys_demo/config_status_bar/config_status_bar.h"
+#include "lv_ldesk_sys/src/utils/utils.h"
 #include "stdio.h"
 #include <stdint.h>
 
@@ -37,6 +30,8 @@ static char *PAGE_NAME = "apps";
 static uint32_t app_obj_size = 0;
 
 static uint32_t idx = 0;
+
+static page_id target_page_id = -1;
 
 /**
  * @brief 添加阴影效果到图标
@@ -60,7 +55,7 @@ static void icon_remove_shadow(lv_obj_t *obj) {
  * @brief 切换应用
  * @param id 要切换的应用ID
  */
-static void switch_app(uint32_t id) {
+static void switch_app(page_id id) {
   static uint32_t old_id = -1;
   static int old_y = -1;
   static int new_y = -1;
@@ -89,7 +84,8 @@ static void switch_app(uint32_t id) {
 
   // 打开应用
   if (old_id == id) {
-    ldesk_sys_enter_page_from_id(app->target_page_id);
+    ldesk_sys_switch_page_from_id(app->target_page_id,
+                                  LV_SCR_LOAD_ANIM_MOVE_RIGHT);
     return;
   }
 
@@ -157,10 +153,6 @@ static void event_handler(lv_event_t *e) {
 static void cont_row_obj_init(lv_obj_t *cont_row_obj, lv_obj_t *parent) {
   /* 设置行容器的样式、事件处理等 */
   lv_group_add_obj(lv_group_get_default(), cont_row_obj);
-  // lv_obj_add_event_cb(cont_row_app, event_handler, LV_EVENT_CLICKED, NULL);
-  // lv_obj_add_event_cb(cont_row_app, event_handler, LV_EVENT_KEY, NULL);
-  // lv_obj_add_event_cb(cont_row_obj, event_handler, LV_EVENT_SCROLL_END,
-  // NULL);
   lv_obj_set_style_bg_color(cont_row_obj, APPS_BACKGROUND_COLOR, LV_PART_MAIN);
   lv_obj_set_size(cont_row_obj, GUI_WIDTH,
                   GUI_HEIGHT - APPS_APP_NAME_HEIGHT - STATUS_BAR_HEIGHT);
@@ -252,7 +244,7 @@ static void apps_label_init(lv_obj_t *parent) {
  * @param gui 页面的GUI对象
  * @return 返回初始化结果，0 表示成功，其他值表示失败
  */
-int page_apps_init(lv_obj_t *gui, void *data) {
+int page_apps_init(page_gui *gui, void *data) {
   page_self_gui = gui;
   lv_obj_set_style_bg_color(page_self_gui, APPS_BACKGROUND_COLOR, LV_PART_MAIN);
 
@@ -274,32 +266,25 @@ int page_apps_init(lv_obj_t *gui, void *data) {
   /* 切换到第一个应用 */
   switch_app(0);
 
-  /* 设置状态栏 */
-#ifdef USE_STATUS_BAR
-  /*
-   * 设置状态栏的父对象、时间显示等
-   * 设置状态栏为启用
-   */
-  set_status_bar_parent(page_self_gui);
-  set_status_bar(STATUS_BAR_ENABLE);
+  status_bar_init(page_self_gui, PAGE_NAME);
 
   /*
    * 设置状态栏的背景颜色和字体颜色
    */
   bar_set_text_color(APPS_APP_NAME_FONT_COLOR);
   bar_set_bg_color(APPS_BACKGROUND_COLOR);
-
-#ifdef SHOW_STATUS_BAR_TIME
-  set_status_bar_time(STATUS_BAR_ENABLE);
-#endif // !SHOW_STATUS_BAR_TIME
-
-#ifdef SHOW_STATUS_BAR_TITLE
-  set_status_bar_title(STATUS_BAR_ENABLE);
-  set_status_bar_title_text(PAGE_NAME);
-#endif // !SHOW_STATUS_BAR_TITLE
-
-#endif // SHOW_STATUS_BAR_TIME
   return 0;
 }
 
-int page_apps_exit(lv_obj_t *gui, void *data) { return 0; }
+static void exit_cb(void *data) {
+  dlog("id = %d\n", target_page_id);
+  ldesk_sys_disp_page_from_id(target_page_id, PAGE_ENTER_ANIM);
+}
+
+int page_apps_exit(page_gui *gui, void *data) {
+  target_page_id = *(page_id *)data;
+  set_apps_label(HIDE, NULL);
+  bar_set_exit(exit_cb);
+  status_bar_exit();
+  return 0;
+}

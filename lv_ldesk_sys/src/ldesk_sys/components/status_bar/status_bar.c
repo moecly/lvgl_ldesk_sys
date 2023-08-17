@@ -15,6 +15,11 @@ static status_bar *bar;
 /* 全局状态栏元素 */
 static bar_elem elem;
 
+static void exit_ready_cb(struct _lv_anim_t *anim) {
+  if (bar->exit_cb)
+    bar->exit_cb(anim);
+}
+
 /*
  * @brief: 函数用于显示或隐藏状态栏，并使用动画实现平滑的过渡效果
  * @params is_show:
@@ -39,7 +44,7 @@ static void set_show(lv_obj_t *obj, int is_show) {
   if (is_show == STATUS_BAR_DISABLE &&
       elem.status_bar.state == STATUS_BAR_ENABLE) {
     /* 添加一个动画：从显示状态移动到隐藏状态 */
-    ANIM_LINE_ADD(&anim, anim_y_cb, lv_anim_path_overshoot, NULL,
+    ANIM_LINE_ADD(&anim, anim_y_cb, lv_anim_path_overshoot, exit_ready_cb,
                   STATUS_BAR_ANIM_DURATION, 0, STATUS_BAR_ANIM_DELAY, obj, 0,
                   STATUS_BAR_START_LOCA, 0);
     /* 启动动画 */
@@ -75,6 +80,13 @@ static void title_set_state(STATUS_BAR_STATE state) {
   elem.title.state = state;
 }
 
+static void ret_btn_set_state(STATUS_BAR_STATE state) {
+  lv_obj_t *obj = bar->bar;
+  lv_obj_t *ret_btn = lv_obj_get_child(obj, elem.ret_btn.id);
+  set_show(ret_btn, state);
+  elem.ret_btn.state = state;
+}
+
 /*
  * @brief: 设置状态栏或时间的状态
  * @param type: 状态栏类型
@@ -89,6 +101,9 @@ static void status_bar_set_state(STATUS_BAR_TYPE type, STATUS_BAR_STATE state) {
 
   if (type == TITLE)
     title_set_state(state);
+
+  if (type == RET_BTN)
+    ret_btn_set_state(state);
 }
 
 /*
@@ -289,10 +304,12 @@ status_bar *status_bar_instance(void) {
   bar->set_title = status_bar_set_title;
   bar->set_bg_color = status_bar_set_bg_color;
   bar->set_text_color = status_bar_set_text_color;
+  bar->exit_cb = NULL;
   status_bar_init();
   status_bar_set_state(STATUS_BAR, STATUS_BAR_DISABLE);
   status_bar_set_state(TIME, STATUS_BAR_DISABLE);
   status_bar_set_state(TITLE, STATUS_BAR_DISABLE);
+  status_bar_set_state(RET_BTN, STATUS_BAR_DISABLE);
 
   return bar;
 }

@@ -11,8 +11,9 @@
 extern "C" {
 #endif
 
-#include "lvgl/lvgl.h"
+#include "lv_ldesk_sys/src/ldesk_sys/ldesk_sys_manager/ldesk_sys_manager.h"
 #include "lv_ldesk_sys_conf.h"
+#include "lvgl/lvgl.h"
 
 enum {
   SHOW,
@@ -24,8 +25,8 @@ enum {
  * @param root 页面的根GUI对象
  * @return 返回初始化结果，0 表示成功，其他值表示失败
  */
-int page_apps_init(lv_obj_t *root, void *data);
-int page_apps_exit(lv_obj_t *gui, void *data);
+int page_apps_init(page_gui *root, void *data);
+int page_apps_exit(page_gui *gui, void *data);
 
 #ifdef __cplusplus
 } /* extern "C" */

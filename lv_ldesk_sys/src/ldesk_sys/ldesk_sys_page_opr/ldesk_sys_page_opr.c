@@ -7,14 +7,18 @@
 #include "ldesk_sys_page_opr.h"
 #include "lv_ldesk_sys/src/ldesk_sys/components/status_bar/status_bar.h"
 #include "lv_ldesk_sys/src/ldesk_sys/ldesk_sys_manager/ldesk_sys_manager.h"
+#include "lv_ldesk_sys/src/utils/common/common.h"
+#include "lv_ldesk_sys/src/utils/log_msg/log_msg.h"
 #include <stdint.h>
+
+static uint32_t old_id = -1;
 
 /**
  * @brief 设置状态栏的状态
  * @param type 状态栏类型
  * @param state 状态栏状态
  */
-void set_status_bar_state(int type, int state) {
+void set_status_bar_state(STATUS_BAR_TYPE type, STATUS_BAR_STATE state) {
   status_bar_instance()->set_state(type, state);
 }
 
@@ -22,7 +26,9 @@ void set_status_bar_state(int type, int state) {
  * @brief 设置状态栏的状态为启用或禁用
  * @param state 状态栏状态
  */
-void set_status_bar(int state) { set_status_bar_state(STATUS_BAR, state); }
+void set_status_bar(STATUS_BAR_STATE state) {
+  set_status_bar_state(STATUS_BAR, state);
+}
 
 /**
  * @brief 设置状态栏的父对象
@@ -36,13 +42,21 @@ void set_status_bar_parent(lv_obj_t *parent) {
  * @brief 设置状态栏时间的显示状态
  * @param state 时间显示状态
  */
-void set_status_bar_time(int state) { set_status_bar_state(TIME, state); }
+void set_status_bar_time(STATUS_BAR_STATE state) {
+  set_status_bar_state(TIME, state);
+}
 
 /**
  * @brief 设置状态栏标题的显示状态
  * @param state 标题显示状态
  */
-void set_status_bar_title(int state) { set_status_bar_state(TITLE, state); }
+void set_status_bar_title(STATUS_BAR_STATE state) {
+  set_status_bar_state(TITLE, state);
+}
+
+void set_status_bar_ret_btn(STATUS_BAR_STATE state) {
+  set_status_bar_state(RET_BTN, state);
+}
 
 /**
  * @brief 设置状态栏标题文本
@@ -55,15 +69,13 @@ void set_status_bar_title_text(char *title) {
 /*
  * @brief: 根据页面 ID 切换显示不同页面，并执行相关操作
  */
-int ldesk_sys_disp_page_from_id(uint32_t id, void *create_params,
-                                lv_scr_load_anim_t load_anim) {
+int ldesk_sys_disp_page_from_id(page_id id, lv_scr_load_anim_t load_anim) {
   int ret;
-  static uint32_t old_id = -1;
 
   if (old_id == id)
     return 0;
 
-  ret = ldesk_sys_create_page_from_id(id, (void *)&create_params);
+  ret = ldesk_sys_create_page_from_id(id, NULL);
   if (ret) {
     ELOG_CURR();
     return -1;
@@ -75,25 +87,18 @@ int ldesk_sys_disp_page_from_id(uint32_t id, void *create_params,
     return -1;
   }
 
-  // if (old_id != -1)
-  //   ldesk_sys_exit_page_from_id(old_id, (void *)&del_params);
-
   old_id = id;
   return 0;
 }
 
-int ldesk_sys_switch_page_from_id(uint32_t id, void *create_params,
-                                  void *del_params,
-                                  lv_scr_load_anim_t load_anim) {
-  static uint32_t old_id = -1;
+int ldesk_sys_switch_page_from_id(page_id id, lv_scr_load_anim_t load_anim) {
   if (old_id == id)
     return 0;
 
-  if (old_id != -1)
-    ldesk_sys_exit_page_from_id(old_id, (void *)del_params);
-  else
-    ldesk_sys_disp_page_from_id(id, create_params, load_anim);
+  if (old_id == -1)
+    return ldesk_sys_disp_page_from_id(id, load_anim);
 
+  ldesk_sys_exit_page_from_id(old_id, (void *)&id);
   return 0;
 }
 
@@ -122,7 +127,7 @@ int ldesk_sys_exit_page(page_object *page, void *data) {
 /*
  * 根据页面 ID 退出页面对象及相关资源
  */
-int ldesk_sys_exit_page_from_id(uint32_t id, void *data) {
+int ldesk_sys_exit_page_from_id(page_id id, void *data) {
   page_object *page = ldesk_sys_get_page_from_id(id);
   dlog("exit page id = %d\n", id);
   return ldesk_sys_exit_page(page, data);
@@ -133,7 +138,7 @@ int ldesk_sys_exit_page_from_id(uint32_t id, void *data) {
  * @param id: 页面的ID
  * @return: 返回页面创建状态，成功返回0，失败返回-1
  */
-int ldesk_sys_create_page_from_id(uint32_t id, void *data) {
+int ldesk_sys_create_page_from_id(page_id id, void *data) {
   page_object *page = ldesk_sys_get_page_from_id(id);
   dlog("create page id = %d\n", id);
   return ldesk_sys_create_page(page, data);
@@ -152,7 +157,7 @@ void ldesk_sys_load_page(page_object *page, lv_scr_load_anim_t load_anim) {
  * @param id: 页面的ID
  * @return: 返回页面加载状态，成功返回0，失败返回-1
  */
-int ldesk_sys_load_page_from_id(uint32_t id, lv_scr_load_anim_t load_anim) {
+int ldesk_sys_load_page_from_id(page_id id, lv_scr_load_anim_t load_anim) {
   page_object *page = ldesk_sys_get_page_from_id(id);
   if (validate_pointer(page)) {
     ELOG_CURR();
@@ -160,14 +165,6 @@ int ldesk_sys_load_page_from_id(uint32_t id, lv_scr_load_anim_t load_anim) {
   }
   ldesk_sys_load_page(page, load_anim);
   return 0;
-}
-
-int ldesk_sys_enter_page_from_id(uint32_t id) {
-  return ldesk_sys_disp_page_from_id(id, NULL, PAGE_ENTER_ANIM);
-}
-
-int ldesk_sys_quit_page_from_id(uint32_t id) {
-  return ldesk_sys_disp_page_from_id(id, NULL, PAGE_QUIT_ANIM);
 }
 
 /*

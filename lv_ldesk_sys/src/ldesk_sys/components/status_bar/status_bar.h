@@ -17,7 +17,8 @@
 typedef enum {
   STATUS_BAR, /* 状态栏 */
   TIME,       /* 时间 */
-  TITLE       /* 页面名称 */
+  TITLE,      /* 页面名称 */
+  RET_BTN,    /* 返回按钮 */
 } STATUS_BAR_TYPE;
 
 /*

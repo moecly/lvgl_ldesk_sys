@@ -5,6 +5,7 @@
  */
 
 #include "ldesk_sys_manager.h"
+#include "lv_ldesk_sys/src/ldesk_sys/components/status_bar/status_bar.h"
 #include "lv_ldesk_sys/src/utils/list/list.h"
 #include "lv_ldesk_sys/src/utils/log_msg/log_msg.h"
 #include "src/core/lv_disp.h"

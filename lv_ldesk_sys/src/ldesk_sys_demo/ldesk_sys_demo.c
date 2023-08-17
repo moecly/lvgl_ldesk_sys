@@ -9,6 +9,7 @@
 #include "lv_ldesk_sys/src/ldesk_sys/ldesk_sys_manager/ldesk_sys_manager.h"
 #include "lv_ldesk_sys/src/ldesk_sys/ldesk_sys_page_opr/ldesk_sys_page_opr.h"
 #include "lv_ldesk_sys/src/ldesk_sys_demo/ldesk_sys_page_conf/ldesk_sys_page_conf.h"
+#include "src/core/lv_disp.h"
 #include <stdint.h>
 
 // 预定义的应用项数组
@@ -66,5 +67,5 @@ void ldesk_sys_demo_init(void) {
   ldesk_sys_add_page(&page_setting);
   ldesk_sys_add_page(&page_wifi);
   apps_init();
-  ldesk_sys_enter_page_from_id(PAGE_APPS);
+  ldesk_sys_switch_page_from_id(PAGE_APPS, PAGE_ENTER_ANIM);
 }
