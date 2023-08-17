@@ -7,7 +7,6 @@
 #ifndef __SYS_TIME_H_
 #define __SYS_TIME_H_
 
-#include "../utils.h"
 #include "time.h"
 
 /**

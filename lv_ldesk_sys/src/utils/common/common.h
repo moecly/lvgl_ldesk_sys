@@ -7,7 +7,9 @@
 #ifndef __COMMON_H_
 #define __COMMON_H_
 
-#include "../utils.h"
+#ifndef NULL
+#define NULL (void *)0
+#endif // !NULL
 
 /* 定义一个宏，用于根据属性类型分配内存并返回指针 */
 #ifndef MALLOC_FUNC

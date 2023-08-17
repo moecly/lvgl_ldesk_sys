@@ -7,12 +7,15 @@
 #ifndef __LDESK_SYS_PAGE_OPR_H_
 #define __LDESK_SYS_PAGE_OPR_H_
 
-#include "../ldesk_sys.h"
-
 /**
  * @brief 设置状态栏的状态为启用或禁用
  * @param state 状态栏状态
  */
+#include "lv_ldesk_sys/src/ldesk_sys/components/status_bar/status_bar.h"
+#include "lv_ldesk_sys/src/ldesk_sys/ldesk_sys_manager/ldesk_sys_manager.h"
+#include "lv_ldesk_sys/src/utils/utils.h"
+#include "lv_ldesk_sys_conf.h"
+#include "lvgl/lvgl.h"
 void set_status_bar(int state);
 
 /**
@@ -47,14 +50,13 @@ void set_status_bar_title_text(char *title);
 void set_status_bar_parent(lv_obj_t *parent);
 
 int ldesk_sys_disp_page_from_id(uint32_t id, void *create_params,
-                                void *del_params, lv_scr_load_anim_t load_anim);
+                                lv_scr_load_anim_t load_anim);
 
 /*
  * @brief: 加载页面到屏幕
  * @param page: 页面对象指针
  */
-void ldesk_sys_load_page(struct page_object *page,
-                         lv_scr_load_anim_t load_anim);
+void ldesk_sys_load_page(page_object *page, lv_scr_load_anim_t load_anim);
 
 /*
  * @brief: 根据ID加载页面到屏幕
@@ -70,11 +72,11 @@ int ldesk_sys_load_page_from_id(uint32_t id, lv_scr_load_anim_t load_anim);
  */
 int ldesk_sys_create_page_from_id(uint32_t id, void *data);
 
-int ldesk_sys_create_page(struct page_object *page, void *data);
+int ldesk_sys_create_page(page_object *page, void *data);
 
 int ldesk_sys_exit_page_from_id(uint32_t id, void *data);
 
-int ldesk_sys_exit_page(struct page_object *page, void *data);
+int ldesk_sys_exit_page(page_object *page, void *data);
 
 /*
  * @brief 设置状态栏背景颜色
@@ -90,5 +92,10 @@ void bar_set_text_color(lv_color_t value);
 
 int ldesk_sys_enter_page_from_id(uint32_t id);
 int ldesk_sys_quit_page_from_id(uint32_t id);
+int ldesk_sys_switch_page_from_id(uint32_t id, void *create_params,
+                                  void *del_params,
+                                  lv_scr_load_anim_t load_anim);
+
+void bar_set_exit(exit_cb_handle exit_cb);
 
 #endif // !__LDESK_SYS_PAGE_OPR_H_

@@ -10,6 +10,7 @@
 #include "lv_ldesk_sys/src/ldesk_sys/ldesk_sys_manager/ldesk_sys_manager.h"
 #include "lv_ldesk_sys/src/ldesk_sys/ldesk_sys_page_opr/ldesk_sys_page_opr.h"
 #include "lv_ldesk_sys/src/utils/log_msg/log_msg.h"
+#include "lv_ldesk_sys/src/utils/lvgl_anim/lvgl_anim.h"
 #include "src/core/lv_disp.h"
 #include "src/core/lv_event.h"
 #include "src/core/lv_group.h"
@@ -88,7 +89,7 @@ static void switch_app(uint32_t id) {
 
   // 打开应用
   if (old_id == id) {
-    ldesk_sys_enter_page_from_id(app->page_id);
+    ldesk_sys_enter_page_from_id(app->target_page_id);
     return;
   }
 

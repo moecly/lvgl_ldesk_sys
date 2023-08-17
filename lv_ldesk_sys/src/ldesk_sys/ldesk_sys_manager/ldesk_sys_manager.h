@@ -11,11 +11,15 @@
 extern "C" {
 #endif
 
-#include "../ldesk_sys.h"
+#include "lvgl/lvgl.h"
 
 #ifndef page_gui
 #define page_gui lv_obj_t
 #endif // !page_gui
+
+#ifndef page_id
+#define page_id int
+#endif // !page_id
 
 /*
  * 页面操作句柄结构体
@@ -28,8 +32,8 @@ typedef struct {
 /*
  * 页面对象结构体
  */
-typedef struct page_object {
-  uint32_t id;   /* 页面ID */
+typedef struct {
+  page_id id;   /* 页面ID */
   char *name;    /* 页面名称 */
   page_gui *gui; /* 页面GUI对象 */
   page_ops ops;  /* 页面操作句柄 */
@@ -51,14 +55,14 @@ void ldesk_sys_init(void);
  * @param id: 页面ID
  * @return: 页面对象指针，若不存在则返回NULL
  */
-page_object *ldesk_sys_get_page_from_id(uint32_t id);
+page_object *ldesk_sys_get_page_from_id(page_id id);
 
 /*
  * @brief: 根据ID获取页面GUI对象
  * @param id: 页面ID
  * @return: 页面GUI对象指针，若不存在则返回NULL
  */
-page_gui *get_page_gui_from_id(uint32_t id);
+page_gui *get_page_gui_from_id(page_id id);
 
 /*
  * @brief: 获取页面GUI对象

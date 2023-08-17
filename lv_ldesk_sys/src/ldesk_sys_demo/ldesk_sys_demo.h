@@ -11,11 +11,12 @@
 extern "C" {
 #endif
 
-#include "../../lv_ldesk_sys.h"
 #include "fonts/font_symbol_def.h"
 #include "ldesk_sys_page_conf/ldesk_sys_page_conf.h"
+#include "lvgl/lvgl.h"
 #include "page_setting/page_setting.h"
 #include "page_wifi/page_wifi.h"
+#include "lv_ldesk_sys/src/utils/utils.h"
 
 LV_FONT_DECLARE(font_symbol_14);
 LV_FONT_DECLARE(font_symbol_32)

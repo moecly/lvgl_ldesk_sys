@@ -6,7 +6,7 @@
 
 #include "ldesk_sys_page_opr.h"
 #include "lv_ldesk_sys/src/ldesk_sys/components/status_bar/status_bar.h"
-#include "src/misc/lv_color.h"
+#include "lv_ldesk_sys/src/ldesk_sys/ldesk_sys_manager/ldesk_sys_manager.h"
 #include <stdint.h>
 
 /**
@@ -56,7 +56,6 @@ void set_status_bar_title_text(char *title) {
  * @brief: 根据页面 ID 切换显示不同页面，并执行相关操作
  */
 int ldesk_sys_disp_page_from_id(uint32_t id, void *create_params,
-                                void *del_params,
                                 lv_scr_load_anim_t load_anim) {
   int ret;
   static uint32_t old_id = -1;
@@ -76,10 +75,25 @@ int ldesk_sys_disp_page_from_id(uint32_t id, void *create_params,
     return -1;
   }
 
-  if (old_id != -1)
-    ldesk_sys_exit_page_from_id(old_id, (void *)&del_params);
+  // if (old_id != -1)
+  //   ldesk_sys_exit_page_from_id(old_id, (void *)&del_params);
 
   old_id = id;
+  return 0;
+}
+
+int ldesk_sys_switch_page_from_id(uint32_t id, void *create_params,
+                                  void *del_params,
+                                  lv_scr_load_anim_t load_anim) {
+  static uint32_t old_id = -1;
+  if (old_id == id)
+    return 0;
+
+  if (old_id != -1)
+    ldesk_sys_exit_page_from_id(old_id, (void *)del_params);
+  else
+    ldesk_sys_disp_page_from_id(id, create_params, load_anim);
+
   return 0;
 }
 
@@ -110,7 +124,7 @@ int ldesk_sys_exit_page(page_object *page, void *data) {
  */
 int ldesk_sys_exit_page_from_id(uint32_t id, void *data) {
   page_object *page = ldesk_sys_get_page_from_id(id);
-  dlog("del page id = %d\n", id);
+  dlog("exit page id = %d\n", id);
   return ldesk_sys_exit_page(page, data);
 }
 
@@ -149,11 +163,11 @@ int ldesk_sys_load_page_from_id(uint32_t id, lv_scr_load_anim_t load_anim) {
 }
 
 int ldesk_sys_enter_page_from_id(uint32_t id) {
-  ldesk_sys_disp_page_from_id(id, NULL, NULL, PAGE_ENTER_ANIM);
+  return ldesk_sys_disp_page_from_id(id, NULL, PAGE_ENTER_ANIM);
 }
 
 int ldesk_sys_quit_page_from_id(uint32_t id) {
-  ldesk_sys_disp_page_from_id(id, NULL, NULL, PAGE_QUIT_ANIM);
+  return ldesk_sys_disp_page_from_id(id, NULL, PAGE_QUIT_ANIM);
 }
 
 /*
@@ -196,4 +210,8 @@ void bar_set_bg_color(lv_color_t value) {
  */
 void bar_set_text_color(lv_color_t value) {
   status_bar_instance()->set_text_color(value);
+}
+
+void bar_set_exit(exit_cb_handle exit_cb) {
+  status_bar_instance()->exit_cb = exit_cb;
 }

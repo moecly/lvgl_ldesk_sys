@@ -7,7 +7,6 @@
 #ifndef __STR_UTIL_H_
 #define __STR_UTIL_H_
 
-#include "../utils.h"
 #include "stdio.h"
 #include "string.h"
 

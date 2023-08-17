@@ -41,7 +41,7 @@ page_gui *get_page_gui(page_object *page) { return page->gui; }
  * @param id: 页面的ID
  * @return: 返回页面的GUI对象，若获取失败则返回NULL
  */
-page_gui *get_page_gui_from_id(uint32_t id) {
+page_gui *get_page_gui_from_id(page_id id) {
   page_object *page = ldesk_sys_get_page_from_id(id);
   if (validate_pointer(page)) {
     ELOG_CURR();
@@ -55,7 +55,7 @@ page_gui *get_page_gui_from_id(uint32_t id) {
  * @param id: 页面的ID
  * @return: 返回页面对象指针，若获取失败则返回NULL
  */
-page_object *ldesk_sys_get_page_from_id(uint32_t id) {
+page_object *ldesk_sys_get_page_from_id(page_id id) {
   page_object *res;
   list_node *nd;
   each_node_for_linked(nd, LIST_HEAD_NODE(page_list), next) {

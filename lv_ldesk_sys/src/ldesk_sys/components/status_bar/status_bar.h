@@ -4,10 +4,11 @@
  * @author: moecly
  */
 
-#ifndef __STATUS_BAR_H
-#define __STATUS_BAR_H
+#ifndef __STATUS_BAR_H_
+#define __STATUS_BAR_H_
 
-#include "../../ldesk_sys.h"
+#include "lv_ldesk_sys_conf.h"
+#include "lvgl/lvgl.h"
 #include <stdint.h>
 
 /*
@@ -42,10 +43,11 @@ typedef struct {
   bar_item status_bar; /* 状态栏项目 */
   bar_item time;       /* 时间项目 */
   bar_item title;      /* 页面名称项目 */
-  bar_item ret_btn;        /* 返回按钮 */
+  bar_item ret_btn;    /* 返回按钮 */
   bar_item ret_label;  /* 返回按钮名字 */
 } bar_elem;
 
+typedef void (*exit_cb_handle)(void *data);
 /*
  * 状态栏实例结构
  */
@@ -58,6 +60,7 @@ typedef struct {
   void (*set_title)(const char *title);      /* 设置状态栏的标题 */
   void (*set_text_color)(lv_color_t value); /* 设置文本颜色 */
   void (*set_bg_color)(lv_color_t value);   /* 设置背景颜色 */
+  exit_cb_handle exit_cb; /* 设置退出状态栏回调函数 */
 } status_bar;
 
 /*
@@ -66,4 +69,4 @@ typedef struct {
  */
 status_bar *status_bar_instance(void);
 
-#endif // !__STATUS_BAR_H
+#endif // !__STATUS_BAR_H_

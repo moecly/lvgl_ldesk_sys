@@ -7,7 +7,7 @@
 #ifndef __LIST_H_
 #define __LIST_H_
 
-#include "../utils.h"
+#include "lv_ldesk_sys/src/utils/common/common.h"
 #include "stdlib.h"
 #include <stdint.h>
 
@@ -28,10 +28,6 @@ typedef struct {
   list_node *tail; /* 链表尾节点 */
   uint32_t len;    /* 链表长度 */
 } pn_list;
-
-#ifndef NULL
-#define NULL (void *)0
-#endif // !NULL
 
 #ifndef SET_NODE
 #define SET_NODE(src, dst, property) src->property = dst;

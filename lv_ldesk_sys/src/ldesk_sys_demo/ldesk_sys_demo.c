@@ -5,10 +5,10 @@
  */
 
 #include "ldesk_sys_demo.h"
+#include "lv_ldesk_sys/src/ldesk_sys/ldesk_sys_app/ldesk_sys_app.h"
+#include "lv_ldesk_sys/src/ldesk_sys/ldesk_sys_manager/ldesk_sys_manager.h"
+#include "lv_ldesk_sys/src/ldesk_sys/ldesk_sys_page_opr/ldesk_sys_page_opr.h"
 #include "lv_ldesk_sys/src/ldesk_sys_demo/ldesk_sys_page_conf/ldesk_sys_page_conf.h"
-#include "src/core/lv_disp.h"
-#include "src/core/lv_event.h"
-#include "src/font/lv_font.h"
 #include <stdint.h>
 
 // 预定义的应用项数组
@@ -17,31 +17,31 @@ static app_item apps[] = {
         .name = "GPS",
         .icon = SYMBOL_GPS,
         .font = (lv_font_t *)&font_symbol_32,
-        .page_id = PAGE_NULL,
+        .target_page_id = PAGE_NULL,
     },
     {
         .name = "WIFI",
         .icon = SYMBOL_WIFI,
         .font = (lv_font_t *)&lv_font_montserrat_32,
-        .page_id = PAGE_WIFI,
+        .target_page_id = PAGE_WIFI,
     },
     {
         .name = "Setting",
         .icon = SYMBOL_SETTING,
         .font = (lv_font_t *)&font_symbol_32,
-        .page_id = PAGE_SETTING,
+        .target_page_id = PAGE_SETTING,
     },
     {
         .name = "Calculator",
         .icon = SYMBOL_CALC,
         .font = (lv_font_t *)&font_symbol_32,
-        .page_id = PAGE_NULL,
+        .target_page_id = PAGE_NULL,
     },
     {
         .name = "Calendar",
         .icon = SYMBOL_CALENDAR,
         .font = (lv_font_t *)&font_symbol_32,
-        .page_id = PAGE_NULL,
+        .target_page_id = PAGE_NULL,
     },
 };
 

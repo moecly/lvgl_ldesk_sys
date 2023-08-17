@@ -11,8 +11,6 @@
 extern "C" {
 #endif
 
-#include "../../lv_ldesk_sys.h"
-
 #include "common/common.h"       /* 引用通用功能模块 */
 #include "list/list.h"           /* 引用链表数据结构模块 */
 #include "log_msg/log_msg.h"     /* 引用日志消息模块 */

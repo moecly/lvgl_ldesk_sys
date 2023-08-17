@@ -11,7 +11,8 @@
 extern "C" {
 #endif
 
-#include "../ldesk_sys.h"
+#include "lvgl/lvgl.h"
+#include "lv_ldesk_sys_conf.h"
 
 enum {
   SHOW,

@@ -6,16 +6,7 @@
 
 #include "status_bar.h"
 #include "lv_ldesk_sys/src/ldesk_sys/ldesk_sys_page_opr/ldesk_sys_page_opr.h"
-#include "lv_ldesk_sys/src/utils/log_msg/log_msg.h"
-#include "src/core/lv_disp.h"
-#include "src/core/lv_event.h"
-#include "src/core/lv_obj.h"
-#include "src/core/lv_obj_pos.h"
-#include "src/core/lv_obj_tree.h"
-#include "src/misc/lv_color.h"
-#include "src/widgets/lv_btn.h"
-#include "src/widgets/lv_label.h"
-#include <alloca.h>
+#include "lv_ldesk_sys/src/utils/utils.h"
 #include <string.h>
 
 /* 全局状态栏实例 */

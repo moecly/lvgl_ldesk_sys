@@ -7,8 +7,6 @@
 #ifndef __LVGL_ANIM_H_
 #define __LVGL_ANIM_H_
 
-#include "../utils.h"
-
 /**
  * @brief: 添加线性动画
  * @param a: 动画实例
@@ -23,6 +21,8 @@
  * @param end: 结束值
  * @param repeatcnt: 重复次数
  */
+#include "lvgl/lvgl.h"
+
 #define ANIM_LINE_ADD(a, exec_cb, path_cb, ready_cb, time, back_time, delay,   \
                       var, begin, end, repeatcnt)                              \
   do {                                                                         \
