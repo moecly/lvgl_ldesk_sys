@@ -7,6 +7,7 @@
 #ifndef __STATUS_BAR_H_
 #define __STATUS_BAR_H_
 
+#include "lv_ldesk_sys/src/ldesk_sys/ldesk_sys_manager/ldesk_sys_manager.h"
 #include "lv_ldesk_sys_conf.h"
 #include "lvgl/lvgl.h"
 #include <stdint.h>
@@ -69,5 +70,6 @@ typedef struct {
  * @return: 状态栏实例指针
  */
 status_bar *status_bar_instance(void);
+void status_bar_set_target_page_id(page_id id);
 
 #endif // !__STATUS_BAR_H_

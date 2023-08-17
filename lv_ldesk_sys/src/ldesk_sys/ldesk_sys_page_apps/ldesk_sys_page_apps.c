@@ -10,6 +10,7 @@
 #include "lv_ldesk_sys/src/ldesk_sys/ldesk_sys_manager/ldesk_sys_manager.h"
 #include "lv_ldesk_sys/src/ldesk_sys/ldesk_sys_page_opr/ldesk_sys_page_opr.h"
 #include "lv_ldesk_sys/src/ldesk_sys_demo/config_status_bar/config_status_bar.h"
+#include "lv_ldesk_sys/src/ldesk_sys_demo/ldesk_sys_page_conf/ldesk_sys_page_conf.h"
 #include "lv_ldesk_sys/src/utils/utils.h"
 #include "stdio.h"
 #include <stdint.h>
@@ -32,6 +33,8 @@ static uint32_t app_obj_size = 0;
 static uint32_t idx = 0;
 
 static page_id target_page_id = -1;
+
+static int is_exit = -2;
 
 /**
  * @brief 添加阴影效果到图标
@@ -239,6 +242,11 @@ static void apps_label_init(lv_obj_t *parent) {
   set_apps_label(SHOW, NULL);
 }
 
+static void exit_cb(void *data) {
+  dlog("id = %d\n", target_page_id);
+  ldesk_sys_disp_page_from_id(target_page_id, PAGE_SWITCH_ANIM);
+}
+
 /**
  * @brief 页面初始化函数
  * @param gui 页面的GUI对象
@@ -246,6 +254,7 @@ static void apps_label_init(lv_obj_t *parent) {
  */
 int page_apps_init(page_gui *gui, void *data) {
   page_self_gui = gui;
+  is_exit = 0;
   lv_obj_set_style_bg_color(page_self_gui, APPS_BACKGROUND_COLOR, LV_PART_MAIN);
 
   /* 创建应用列表行容器 */
@@ -266,25 +275,23 @@ int page_apps_init(page_gui *gui, void *data) {
   /* 切换到第一个应用 */
   switch_app(0);
 
-  status_bar_init(page_self_gui, PAGE_NAME);
-
   /*
-   * 设置状态栏的背景颜色和字体颜色
+   * 设置状态栏
    */
+  status_bar_init(page_self_gui, PAGE_NAME);
   bar_set_text_color(APPS_APP_NAME_FONT_COLOR);
   bar_set_bg_color(APPS_BACKGROUND_COLOR);
+  status_bar_set_page_id(PAGE_NULL);
+  bar_set_exit(exit_cb);
   return 0;
 }
 
-static void exit_cb(void *data) {
-  dlog("id = %d\n", target_page_id);
-  ldesk_sys_disp_page_from_id(target_page_id, PAGE_ENTER_ANIM);
-}
-
 int page_apps_exit(page_gui *gui, void *data) {
+  if (is_exit == 1)
+    return 0;
+  is_exit = 1;
   target_page_id = *(page_id *)data;
   set_apps_label(HIDE, NULL);
-  bar_set_exit(exit_cb);
   status_bar_exit();
   return 0;
 }

@@ -67,5 +67,5 @@ void ldesk_sys_demo_init(void) {
   ldesk_sys_add_page(&page_setting);
   ldesk_sys_add_page(&page_wifi);
   apps_init();
-  ldesk_sys_switch_page_from_id(PAGE_APPS, PAGE_ENTER_ANIM);
+  ldesk_sys_switch_page_from_id(PAGE_APPS, PAGE_SWITCH_ANIM);
 }

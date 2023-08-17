@@ -212,3 +212,5 @@ void bar_set_text_color(lv_color_t value) {
 void bar_set_exit(exit_cb_handle exit_cb) {
   status_bar_instance()->exit_cb = exit_cb;
 }
+
+void status_bar_set_page_id(page_id id) { status_bar_set_target_page_id(id); }

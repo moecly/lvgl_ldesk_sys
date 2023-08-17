@@ -5,8 +5,11 @@
  */
 
 #include "status_bar.h"
+#include "lv_ldesk_sys/src/ldesk_sys/ldesk_sys_manager/ldesk_sys_manager.h"
 #include "lv_ldesk_sys/src/ldesk_sys/ldesk_sys_page_opr/ldesk_sys_page_opr.h"
+#include "lv_ldesk_sys/src/ldesk_sys_demo/ldesk_sys_page_conf/ldesk_sys_page_conf.h"
 #include "lv_ldesk_sys/src/utils/utils.h"
+#include "src/core/lv_event.h"
 #include <string.h>
 
 /* 全局状态栏实例 */
@@ -14,6 +17,8 @@ static status_bar *bar;
 
 /* 全局状态栏元素 */
 static bar_elem elem;
+
+static page_id target_page_id = PAGE_NULL;
 
 static void exit_ready_cb(struct _lv_anim_t *anim) {
   if (bar->exit_cb)
@@ -209,7 +214,12 @@ static void status_bar_set_bg_color(lv_color_t value) {
   lv_obj_set_style_bg_color(ret_btn, value, LV_PART_MAIN);
 }
 
-static void event_cb(lv_event_t *e) { DLOG_CURR(); }
+static void event_cb(lv_event_t *e) {
+  lv_event_code_t code = lv_event_get_code(e);
+  if (code == LV_EVENT_CLICKED && target_page_id != PAGE_NULL) {
+    ldesk_sys_switch_page_from_id(target_page_id, PAGE_SWITCH_ANIM);
+  }
+}
 
 /*
  * @brief: 初始化状态栏
@@ -286,6 +296,8 @@ static void status_bar_init(void) {
   lv_timer_t *lv_timer = lv_timer_create(status_bar_time_task, 1200, NULL);
   UNUSED(lv_timer);
 }
+
+void status_bar_set_target_page_id(page_id id) { target_page_id = id; }
 
 /*
  * @brief: 获取状态栏实例
