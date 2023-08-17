@@ -42,6 +42,8 @@ typedef struct {
   bar_item status_bar; /* 状态栏项目 */
   bar_item time;       /* 时间项目 */
   bar_item title;      /* 页面名称项目 */
+  bar_item ret_btn;        /* 返回按钮 */
+  bar_item ret_label;  /* 返回按钮名字 */
 } bar_elem;
 
 /*
@@ -54,8 +56,8 @@ typedef struct {
                     STATUS_BAR_STATE state); /* 设置状态栏或项目的状态 */
   void (*set_parent)(lv_obj_t *parent);      /* 设置状态栏的父对象 */
   void (*set_title)(const char *title);      /* 设置状态栏的标题 */
-  void (*set_text_color)(lv_color_t value);      /* 设置文本颜色 */
-  void (*set_bg_color)(lv_color_t value);      /* 设置背景颜色 */
+  void (*set_text_color)(lv_color_t value); /* 设置文本颜色 */
+  void (*set_bg_color)(lv_color_t value);   /* 设置背景颜色 */
 } status_bar;
 
 /*

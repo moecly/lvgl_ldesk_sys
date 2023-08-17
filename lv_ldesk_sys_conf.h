@@ -30,7 +30,11 @@
 
 #define GUI_WIDTH 280
 #define GUI_HEIGHT 240
+
+/* page */
 #define PAGE_SWITCH_TIME 500
+#define PAGE_ENTER_ANIM LV_SCR_LOAD_ANIM_MOVE_BOTTOM
+#define PAGE_QUIT_ANIM LV_SCR_LOAD_ANIM_OVER_BOTTOM
 
 #if LDESK_SYS_DEMO
 
@@ -67,12 +71,17 @@
 #define SHOW_STATUS_BAR_TIME 1
 #define STATUS_BAR_TIME_TEXT_SIZE lv_font_montserrat_22
 #define STATUS_BAR_TIME_X_SPACING 5
-#define STATUS_BAR_TIME_y_SPACING 3
+#define STATUS_BAR_TIME_Y_SPACING 3
 /* status bar title config */
 #define SHOW_STATUS_BAR_TITLE 1
 #define STATUS_BAR_TITLE_TEXT_SIZE lv_font_montserrat_22
 #define STATUS_BAR_TITLE_X_SPACING 0
-#define STATUS_BAR_TITLE_y_SPACING 3
+#define STATUS_BAR_TITLE_Y_SPACING 3
+/* status bar ret btn config */
+#define SHOW_STATUS_BAR_RET_BTN 1
+#define STATUS_BAR_RET_BTN_TEXT_SIZE lv_font_montserrat_22
+#define STATUS_BAR_RET_BTN_X_SPACING 0
+#define STATUS_BAR_RET_BTN_Y_SPACING 3
 
 #endif
 

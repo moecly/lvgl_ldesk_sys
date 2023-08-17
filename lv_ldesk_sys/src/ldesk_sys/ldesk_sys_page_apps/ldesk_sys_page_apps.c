@@ -88,8 +88,7 @@ static void switch_app(uint32_t id) {
 
   // 打开应用
   if (old_id == id) {
-    ldesk_sys_disp_page_from_id(app->page_id, NULL, NULL,
-                                LV_SCR_LOAD_ANIM_MOVE_BOTTOM);
+    ldesk_sys_enter_page_from_id(app->page_id);
     return;
   }
 
@@ -157,6 +156,7 @@ static void event_handler(lv_event_t *e) {
 static void cont_row_obj_init(lv_obj_t *cont_row_obj, lv_obj_t *parent) {
   /* 设置行容器的样式、事件处理等 */
   lv_group_add_obj(lv_group_get_default(), cont_row_obj);
+  // lv_obj_add_event_cb(cont_row_app, event_handler, LV_EVENT_CLICKED, NULL);
   // lv_obj_add_event_cb(cont_row_app, event_handler, LV_EVENT_KEY, NULL);
   // lv_obj_add_event_cb(cont_row_obj, event_handler, LV_EVENT_SCROLL_END,
   // NULL);

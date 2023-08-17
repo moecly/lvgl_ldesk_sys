@@ -5,11 +5,16 @@
  */
 
 #include "status_bar.h"
+#include "lv_ldesk_sys/src/ldesk_sys/ldesk_sys_page_opr/ldesk_sys_page_opr.h"
 #include "lv_ldesk_sys/src/utils/log_msg/log_msg.h"
 #include "src/core/lv_disp.h"
+#include "src/core/lv_event.h"
 #include "src/core/lv_obj.h"
+#include "src/core/lv_obj_pos.h"
 #include "src/core/lv_obj_tree.h"
 #include "src/misc/lv_color.h"
+#include "src/widgets/lv_btn.h"
+#include "src/widgets/lv_label.h"
 #include <alloca.h>
 #include <string.h>
 
@@ -25,7 +30,7 @@ static bar_elem elem;
  *      STATUS_BAR_ENABLE显示
  *      STATUS_BAR_DISABLE不显示
  */
-static void bar_show(int is_show) {
+static void set_show(lv_obj_t *obj, int is_show) {
   /* 创建一个 LVGL 动画对象 */
   lv_anim_t anim;
 
@@ -34,7 +39,7 @@ static void bar_show(int is_show) {
       elem.status_bar.state == STATUS_BAR_DISABLE) {
     /* 添加一个动画：从隐藏状态移动到显示状态 */
     ANIM_LINE_ADD(&anim, anim_y_cb, lv_anim_path_overshoot, NULL,
-                  STATUS_BAR_ANIM_DURATION, 0, STATUS_BAR_ANIM_DELAY, bar->bar,
+                  STATUS_BAR_ANIM_DURATION, 0, STATUS_BAR_ANIM_DELAY, obj,
                   STATUS_BAR_START_LOCA, 0, 0);
     lv_anim_start(&anim); /* 启动动画 */
   }
@@ -44,8 +49,8 @@ static void bar_show(int is_show) {
       elem.status_bar.state == STATUS_BAR_ENABLE) {
     /* 添加一个动画：从显示状态移动到隐藏状态 */
     ANIM_LINE_ADD(&anim, anim_y_cb, lv_anim_path_overshoot, NULL,
-                  STATUS_BAR_ANIM_DURATION, 0, STATUS_BAR_ANIM_DELAY, bar->bar,
-                  0, STATUS_BAR_START_LOCA, 0);
+                  STATUS_BAR_ANIM_DURATION, 0, STATUS_BAR_ANIM_DELAY, obj, 0,
+                  STATUS_BAR_START_LOCA, 0);
     /* 启动动画 */
     lv_anim_start(&anim);
   }
@@ -57,7 +62,7 @@ static void bar_show(int is_show) {
  */
 static void bar_set_state(STATUS_BAR_STATE state) {
   /* 在这里进行状态栏的状态设置操作 */
-  bar_show(state);
+  set_show(bar->bar, state);
   elem.status_bar.state = state;
 }
 
@@ -65,9 +70,17 @@ static void bar_set_state(STATUS_BAR_STATE state) {
  * @brief: 设置时间的状态
  * @param state: 时间状态
  */
-static void time_set_state(STATUS_BAR_STATE state) { elem.time.state = state; }
+static void time_set_state(STATUS_BAR_STATE state) {
+  lv_obj_t *obj = bar->bar;
+  lv_obj_t *time = lv_obj_get_child(obj, elem.time.id);
+  set_show(time, state);
+  elem.time.state = state;
+}
 
 static void title_set_state(STATUS_BAR_STATE state) {
+  lv_obj_t *obj = bar->bar;
+  lv_obj_t *title = lv_obj_get_child(obj, elem.title.id);
+  set_show(title, state);
   elem.title.state = state;
 }
 
@@ -171,6 +184,11 @@ static void status_bar_set_text_color(lv_color_t value) {
   /* set title font color */
   obj = lv_obj_get_child(parent, elem.title.id);
   lv_obj_set_style_text_color(obj, value, LV_PART_MAIN);
+
+  /* set ret btn label color */
+  lv_obj_t *rer_btn = lv_obj_get_child(parent, elem.ret_btn.id);
+  obj = lv_obj_get_child(rer_btn, elem.ret_label.id);
+  lv_obj_set_style_text_color(obj, value, LV_PART_MAIN);
 }
 
 /*
@@ -180,7 +198,12 @@ static void status_bar_set_text_color(lv_color_t value) {
 static void status_bar_set_bg_color(lv_color_t value) {
   lv_obj_t *obj = bar->bar;
   lv_obj_set_style_bg_color(obj, value, LV_PART_MAIN);
+
+  lv_obj_t *ret_btn = lv_obj_get_child(obj, elem.ret_btn.id);
+  lv_obj_set_style_bg_color(ret_btn, value, LV_PART_MAIN);
 }
+
+static void event_cb(lv_event_t *e) { DLOG_CURR(); }
 
 /*
  * @brief: 初始化状态栏
@@ -214,9 +237,9 @@ static void status_bar_init(void) {
   lv_label_set_text(label_time, "07 : 00");
   lv_obj_set_size(label_time, LV_SIZE_CONTENT, STATUS_BAR_HEIGHT);
   lv_obj_set_style_text_font(label_time, &STATUS_BAR_TIME_TEXT_SIZE, 0);
-  lv_obj_set_style_text_color(label_time, lv_palette_main(LV_PALETTE_BLUE), 0);
+  lv_obj_set_style_text_color(label_time, STATUS_BAR_TEXT_COLOR, 0);
   lv_obj_align(label_time, LV_ALIGN_LEFT_MID, STATUS_BAR_TIME_X_SPACING,
-               STATUS_BAR_TIME_y_SPACING);
+               STATUS_BAR_TIME_Y_SPACING);
 
   /* 创建页面名称标签 */
   lv_obj_t *label_title = lv_label_create(bar->bar);
@@ -229,9 +252,23 @@ static void status_bar_init(void) {
   lv_label_set_text(label_title, "");
   lv_obj_set_size(label_title, LV_SIZE_CONTENT, STATUS_BAR_HEIGHT);
   lv_obj_set_style_text_font(label_title, &STATUS_BAR_TITLE_TEXT_SIZE, 0);
-  lv_obj_set_style_text_color(label_title, lv_palette_main(LV_PALETTE_BLUE), 0);
+  lv_obj_set_style_text_color(label_title, STATUS_BAR_TEXT_COLOR, 0);
   lv_obj_align(label_title, LV_ALIGN_CENTER, STATUS_BAR_TITLE_X_SPACING,
-               STATUS_BAR_TITLE_y_SPACING);
+               STATUS_BAR_TITLE_Y_SPACING);
+
+  /* 创建页面名称标签 */
+  lv_obj_t *ret_btn = lv_btn_create(bar->bar);
+  lv_obj_t *ret_label = lv_label_create(ret_btn);
+  elem.ret_btn.id = lv_obj_get_child_id(ret_btn);
+  elem.ret_label.id = lv_obj_get_child_id(ret_label);
+  lv_obj_set_size(ret_btn, LV_SIZE_CONTENT, STATUS_BAR_HEIGHT);
+  lv_obj_add_event_cb(ret_btn, event_cb, LV_EVENT_CLICKED, NULL);
+  lv_obj_align(ret_btn, LV_ALIGN_RIGHT_MID, STATUS_BAR_RET_BTN_X_SPACING,
+               STATUS_BAR_RET_BTN_Y_SPACING);
+  lv_label_set_text(ret_label, "back");
+  lv_obj_center(ret_label);
+  lv_obj_set_style_text_font(ret_label, &STATUS_BAR_RET_BTN_TEXT_SIZE, 0);
+  lv_obj_set_style_text_color(ret_label, STATUS_BAR_TEXT_COLOR, 0);
 
   /* 设置字体颜色和背景颜色 */
   status_bar_set_text_color(STATUS_BAR_TEXT_COLOR);

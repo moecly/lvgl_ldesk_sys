@@ -60,5 +60,6 @@ int page_wifi_exit(lv_obj_t *gui, void *data) {
 #endif // !SHOW_STATUS_BAR_TITLE
 
 #endif // SHOW_STATUS_BAR_TIME
+  
   return 0;
 }

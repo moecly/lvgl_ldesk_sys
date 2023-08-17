@@ -7,6 +7,7 @@
 #include "ldesk_sys_page_opr.h"
 #include "lv_ldesk_sys/src/ldesk_sys/components/status_bar/status_bar.h"
 #include "src/misc/lv_color.h"
+#include <stdint.h>
 
 /**
  * @brief 设置状态栏的状态
@@ -145,6 +146,14 @@ int ldesk_sys_load_page_from_id(uint32_t id, lv_scr_load_anim_t load_anim) {
   }
   ldesk_sys_load_page(page, load_anim);
   return 0;
+}
+
+int ldesk_sys_enter_page_from_id(uint32_t id) {
+  ldesk_sys_disp_page_from_id(id, NULL, NULL, PAGE_ENTER_ANIM);
+}
+
+int ldesk_sys_quit_page_from_id(uint32_t id) {
+  ldesk_sys_disp_page_from_id(id, NULL, NULL, PAGE_QUIT_ANIM);
 }
 
 /*

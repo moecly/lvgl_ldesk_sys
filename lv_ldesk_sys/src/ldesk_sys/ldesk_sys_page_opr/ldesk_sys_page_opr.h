@@ -88,4 +88,7 @@ void bar_set_bg_color(lv_color_t value);
  */
 void bar_set_text_color(lv_color_t value);
 
+int ldesk_sys_enter_page_from_id(uint32_t id);
+int ldesk_sys_quit_page_from_id(uint32_t id);
+
 #endif // !__LDESK_SYS_PAGE_OPR_H_

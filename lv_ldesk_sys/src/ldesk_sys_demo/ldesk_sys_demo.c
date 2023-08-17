@@ -5,6 +5,7 @@
  */
 
 #include "ldesk_sys_demo.h"
+#include "lv_ldesk_sys/src/ldesk_sys_demo/ldesk_sys_page_conf/ldesk_sys_page_conf.h"
 #include "src/core/lv_disp.h"
 #include "src/core/lv_event.h"
 #include "src/font/lv_font.h"
@@ -65,6 +66,5 @@ void ldesk_sys_demo_init(void) {
   ldesk_sys_add_page(&page_setting);
   ldesk_sys_add_page(&page_wifi);
   apps_init();
-  ldesk_sys_disp_page_from_id(PAGE_APPS, NULL, NULL,
-                              LV_SCR_LOAD_ANIM_MOVE_RIGHT);
+  ldesk_sys_enter_page_from_id(PAGE_APPS);
 }
